@@ -1,8 +1,94 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+@model EmpresaViewModel
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bank API Servopa</h1>
+    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
 </div>
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Nome da Empresa </label>
+        <input type="text" class="form-control" id="EmpresaNome" aria-describedby="EmpresaNome" placeholder="Nome da Empresa">
+        <small id="EmpresaNome" class="form-text text-muted">Por favor coloque aqui o nome da empresa a integrar.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Nome da Revenda </label>
+        <input type="text" class="form-control" id="RevendaNome" aria-describedby="RevendaNome" placeholder="Nome da Revenda">
+        <small id="RevendaNome" class="form-text text-muted">Por favor coloque aqui o nome da revenda a integrar.</small>
+    </div>
+    @*<div class="form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>*@
+    <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">SALVAR</button>
+</form>
+
+
+<script>
+    @*var empresa = @Html.Raw(Json.Encode(Model.Nome));
+    var revenda = @Html.Raw(Json.Encode(Model.Revenda));*@
+    $('#EmpresaNome').val(@Model?.Nome);
+    $('#RevendaNome').val(@Model?.Revenda);
+
+    function loading() {
+        /*LOADING*/
+        Swal.fire({
+            title: 'Loading',
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        });
+    }
+
+    function salveData() {
+        const empresaNome = $('#EmpresaNome').val();
+        const revendaNome = $('#RevendaNome').val();
+
+        if (!empresaNome) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o nome da empresa.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+            return;
+        }
+
+        if (!revendaNome) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o nome da revenda.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+            return;
+        }
+
+        loading();
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Salvar", "Home")",
+            data: { empresa: empresaNome, revenda: revendaNome },
+            success: function (result) {
+                Swal.close();
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Dados salvos com sucesso!',
+                        /*text: 'Por favor preecha o nome da revenda.',*/
+                        /*footer: '<a href="">Why do I have this issue?</a>'*/
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Dados Invalidos!',
+                        text: 'Infelizmente não conseguimos salvar os dados, por favor contacte o administrador do sistema!',
+                        /*footer: '<a href="">Why do I have this issue?</a>'*/
+                    })
+                }
+            }
+        });
+    }
+</script>
