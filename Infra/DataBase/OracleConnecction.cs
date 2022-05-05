@@ -9,7 +9,11 @@ namespace Infra.DataBase
     {
         //Exemplo
         //private string conString = "DATA SOURCE=10.199.15.4/orcl;USER ID=ANF_USER;PASSWORD=ANFUSER;VALIDATE CONNECTION=TRUE;STATEMENT CACHE SIZE=150;";
-        private string conString = "DATA SOURCE=10.100.1.205:1525/APOLLO_TESTE;USER ID=Bradesco;PASSWORD=il2022#;VALIDATE CONNECTION=TRUE;STATEMENT CACHE SIZE=150;";
+
+        //SERVOPA DB
+        //private string conString = "DATA SOURCE=10.100.1.205:1525/APOLLO_TESTE;USER ID=Bradesco;PASSWORD=il2022#;VALIDATE CONNECTION=TRUE;STATEMENT CACHE SIZE=150;";
+        private string conString = "DATA SOURCE=10.100.1.205:1525/Apollo_TESTE;USER ID=Bradesco;PASSWORD=il2022#;VALIDATE CONNECTION=TRUE;STATEMENT CACHE SIZE=150;";
+        //private string conString = "DATA SOURCE=10.100.1.205/APOLLO_TESTE;USER ID=Bradesco;PASSWORD=il2022#;VALIDATE CONNECTION=TRUE;STATEMENT CACHE SIZE=150;";
         public static OracleConnection con;
 
         public OracleDB()
