@@ -5,13 +5,19 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Domain.Models;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace Domain.Services
 {
     public static class IntegrationService
-    { 
-        //URL Para pegar o token
-        private static readonly string GetTokenBradesco = "https://proxy.api.prebanco.com.br/auth/server/v1.1/token";
+    {
+        //Urls
+        private static readonly string EditorSwwager = "https://proxy.api.prebanco.com.br/auth/server/v1.1/token";
+        private static readonly string GetTokenBradesco = "https://proxy.api.prebanco.com.br/auth/server/v1.1/token";  //URL Para pegar o token
+                                                                                                                       //private static readonly string RegistrarBoleto = "https://openapi.bradesco.com.br/v1 e TH=proxy.api.prebanco.com.br/v1/v1";
+        private static readonly string RegistrarBoleto = "https://openapi.bradesco.com.br/v1";
+
+        // Variaveis
         private static string tokenBradesco = "";
         private static string clientKey = "e55e6ce8-c55d-4bb0-b546-c19ec90a3f11";
         private static string clientKSecret = "b7beb315-2067-4084-9b66-4b2ecc019d7d";
@@ -31,6 +37,22 @@ namespace Domain.Services
                 {
                     Console.WriteLine("Resp Token Bradesco Expecytion: " + ex.Message);
                 }
+            }
+        }
+
+        public static async Task PostRegistrarBoleto(BradescoBoleto boletoModel)
+        {
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(boletoModel);
+                var resp = await RestApi.PostAsync(IntegrationService.RegistrarBoleto, jsonString, IntegrationService.tokenBradesco);
+                IntegrationService.tokenBradesco = resp.Content.ToString();
+                Console.WriteLine("Resp Resistrar Boleto Bradesco");
+                Console.WriteLine(resp);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Resp Token Bradesco Expecytion: " + ex.Message);
             }
         }
 

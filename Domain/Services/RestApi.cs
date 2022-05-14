@@ -49,8 +49,8 @@
 			using (HttpClient client = new HttpClient())
 			{
 				string jsonString = JsonConvert.SerializeObject(content);
-				jsonString = jsonString.Replace("Sound", "sound");
-				jsonString = jsonString.Replace("Type", "type"); // type minusculos se não da erro 
+				//jsonString = jsonString.Replace("Sound", "sound");
+				//jsonString = jsonString.Replace("Type", "type"); // type minusculos se não da erro 
 
 				using (HttpContent httpContent = new StringContent(jsonString))
 				{
@@ -72,8 +72,8 @@
 				using (HttpClient client = new HttpClient())
 				{
 					string jsonString = JsonConvert.SerializeObject(content);
-					jsonString = jsonString.Replace("Sound", "sound");
-					jsonString = jsonString.Replace("Type", "type"); // type minusculos se não da erro 
+					//jsonString = jsonString.Replace("Sound", "sound");
+					//jsonString = jsonString.Replace("Type", "type"); // type minusculos se não da erro 
 
 					using (HttpContent httpContent = new StringContent(jsonString))
 					{
