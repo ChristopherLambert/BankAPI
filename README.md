@@ -1,6 +1,6 @@
 # BankAPI
 Integração com APIs Bancarias
 
-VPN SERVOPA -- VPN FortiNet
-L: uBol
-S: &Br@d3sc0
+[comment]: VPN SERVOPA -- VPN FortiNet
+[comment]: L: uBol
+[comment]: S: &Br@d3sc0
