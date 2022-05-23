@@ -58,6 +58,10 @@
 					if (token != null)
 					{
 						client.DefaultRequestHeaders.Add("X-API-Token", token);
+						client.DefaultRequestHeaders.Add("X-Brad-Nonce", "");
+						client.DefaultRequestHeaders.Add("X-API-Token", token);
+						client.DefaultRequestHeaders.Add("X-API-Token", token);
+
 					}
 
 					return await client.PostAsync(url, httpContent);

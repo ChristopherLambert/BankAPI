@@ -59,7 +59,7 @@ namespace Infra.DataBase
 
             //command.Parameters.Add(":username", OracleDbType.NVarchar2).Value = username;
             command.Connection = OracleDB.con;
-            con.Open();
+            //con.Open();
             OracleDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
