@@ -23,9 +23,12 @@ namespace BankAPI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    Console.WriteLine("SECONDS");
+                    Console.WriteLine(DateTime.Now.Second.ToString());
+
                     //STARTING ORACLE
-                    OracleDB oracleDB = new OracleDB();
-                    OracleDB.GetFINTitulo();
+                    //OracleDB oracleDB = new OracleDB();
+                    //OracleDB.GetFINTitulo();
 
                     //STARTING SERVICE
                     new Task(async () =>
