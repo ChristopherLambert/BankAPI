@@ -15,10 +15,34 @@ namespace Infra.DataBase
             {
                 optionsBuilder.UseMySQL("Server=10.100.1.65;User Id=administrador;Password=#uTestBLT22;Database=uTestBoleto");
             }
+
+            //optionsBuilder.UseMySQL("Server=10.100.1.65;User Id=administrador;Password=#uTestBLT22;Database=uTestBoleto", builder =>
+            //{
+            //    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            //});
+            //base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { }
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Empresa>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Nome).IsRequired();
+                entity.Property(e => e.Revenda).IsRequired();
+            });
+
+            modelBuilder.Entity<Retorno>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Empresa).IsRequired();
+                entity.Property(d => d.Atualizacao);
+                entity.Property(d => d.TransacaoID);
+                entity.Property(d => d.Status);
+            });
+        }
     }
 }
 

@@ -12,6 +12,9 @@ namespace Infra.Repositorie
         {
             using (var context = new MySqlDbContext())
             {
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
                 var empresas = context.Empresa;
                 return empresas.FirstOrDefault(emp => emp.Id == id);
             }
@@ -23,6 +26,9 @@ namespace Infra.Repositorie
             {
                 using (var context = new MySqlDbContext())
                 {
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
+
                     context.Empresa.Add(empresa);
                     return true;
                 }
@@ -39,6 +45,9 @@ namespace Infra.Repositorie
             {
                 using (var context = new MySqlDbContext())
                 {
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
+
                     context.Empresa.Update(empresa);
                     return true;
                 }
@@ -53,6 +62,9 @@ namespace Infra.Repositorie
         {
             using (var context = new MySqlDbContext())
             {
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
                 var retornos = context.Retorno;
                 return retornos.FirstOrDefault(ret => ret.Id == id);
             }
@@ -62,6 +74,9 @@ namespace Infra.Repositorie
         {
             using (var context = new MySqlDbContext())
             {
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
                 return context.Retorno.ToList();
             }
         }
@@ -72,6 +87,9 @@ namespace Infra.Repositorie
             {
                 using (var context = new MySqlDbContext())
                 {
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
+
                     context.Retorno.Add(retorno);
                     return true;
                 }
