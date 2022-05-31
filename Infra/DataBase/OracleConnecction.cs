@@ -1,6 +1,8 @@
 ﻿
+using Infra.Entidades;
 using Oracle.ManagedDataAccess.Client;
 using System;
+using System.Collections.Generic;
 
 namespace Infra.DataBase
 {
@@ -37,7 +39,7 @@ namespace Infra.DataBase
             //}
         }
 
-        public static string GetFINTitulo()
+        public static List<BradescoBoleto> GetFINTitulo()
         {
             using (OracleConnection con = OracleDB.con)
             {
@@ -61,57 +63,61 @@ namespace Infra.DataBase
                             "AND FI.ORIGEM IN(1104) " +
                             "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
 
-                        OracleDataReader reader = cmd.ExecuteReader();
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        var listTitulos = new List<BradescoBoleto>();
 
-                        while (reader.Read())
+                        while (dataReader.Read())
                         {
-                            string empresa = reader["EMPRESA"].ToString();
-                            string revenda = reader["REVENDA"].ToString();
+                            var titulo = new BradescoBoleto();
+                            string empresa = dataReader["EMPRESA"].ToString();
+                            string revenda = dataReader["REVENDA"].ToString();
+                            listTitulos.Add(titulo);
                         }
+                        dataReader.Close();
+                        dataReader.Dispose();
+
+                        return listTitulos;
                     }
                     catch(Exception ex)
                     {
                         Console.WriteLine("Oracle Failed: " + ex.Message);
-
                     }
                 }
             }
-
-            #region TESTE ORACLE
-            //OracleCommand command = new OracleCommand();
-            //command.CommandText = "SELECT * FROM FIN_TITULO FI" +
-            //        "WHERE((" +
-            //            "--FI.EMPRESA = X and coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = X and" +
-            //              "FI.BANCO = 104)) AND TIPO = 'CR'" +
-            //              "AND((STATUS = 'EM'" +
-            //              "AND((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT'" +
-            //             "AND(ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) ))" +
-            //                "--and dta_emissao between TO_DATE('xx/xx/xxxx', 'dd/mm/yyyy')" +
-            //             "--and TO_DATE('xx/xx/xxxx','dd/mm/yyyy')" +
-            //                "--and((EMPRESA = X and REVENDA = X and DEPARTAMENTO = X))" +
-            //                "and FI.ORIGEM IN( 1104 )" +
-            //                "and not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA" +
-            //              "where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A');" +
-            //                      "View criada" +
-            //              "SYS @APOLLO SQL > select count(1) from gruposervopa.coaf_boleto;" +
-            //               "COUNT(1)";
-
-            ////command.Parameters.Add(":username", OracleDbType.NVarchar2).Value = username;
-            //command.Connection = OracleDB.con;
-            //OracleDB.con.Open();
-
-            //while (reader.Read())
-            //{
-            //    string password = reader["password"].ToString();
-            //    string customerId = reader["customerId"].ToString();
-            //    string securityQuestion = reader["securityQuestion"].ToString();
-            //    string securityAnswer = reader["securityAnswer"].ToString();
-            //    string email = reader["email"].ToString();
-            //    // user = new User(username, password, customerId, securityQuestion, securityAnswer, email);
-            //}
-            #endregion
-
-            return string.Empty;
         }
     }
 }
+
+#region TESTE ORACLE
+//OracleCommand command = new OracleCommand();
+//command.CommandText = "SELECT * FROM FIN_TITULO FI" +
+//        "WHERE((" +
+//            "--FI.EMPRESA = X and coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = X and" +
+//              "FI.BANCO = 104)) AND TIPO = 'CR'" +
+//              "AND((STATUS = 'EM'" +
+//              "AND((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT'" +
+//             "AND(ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) ))" +
+//                "--and dta_emissao between TO_DATE('xx/xx/xxxx', 'dd/mm/yyyy')" +
+//             "--and TO_DATE('xx/xx/xxxx','dd/mm/yyyy')" +
+//                "--and((EMPRESA = X and REVENDA = X and DEPARTAMENTO = X))" +
+//                "and FI.ORIGEM IN( 1104 )" +
+//                "and not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA" +
+//              "where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A');" +
+//                      "View criada" +
+//              "SYS @APOLLO SQL > select count(1) from gruposervopa.coaf_boleto;" +
+//               "COUNT(1)";
+
+////command.Parameters.Add(":username", OracleDbType.NVarchar2).Value = username;
+//command.Connection = OracleDB.con;
+//OracleDB.con.Open();
+
+//while (reader.Read())
+//{
+//    string password = reader["password"].ToString();
+//    string customerId = reader["customerId"].ToString();
+//    string securityQuestion = reader["securityQuestion"].ToString();
+//    string securityAnswer = reader["securityAnswer"].ToString();
+//    string email = reader["email"].ToString();
+//    // user = new User(username, password, customerId, securityQuestion, securityAnswer, email);
+//}
+#endregion
