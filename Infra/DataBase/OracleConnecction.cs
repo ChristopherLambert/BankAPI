@@ -48,15 +48,15 @@ namespace Infra.DataBase
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "SELECT* FROM FIN_TITULO FIS " +
+                        cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
                             "WHERE((FI.EMPRESA = 1 " +
                             "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 " +
                             "AND FI.BANCO = 104)) AND TIPO = 'CR' " +
                             "AND ((STATUS = 'EM' " +
                             "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
                             "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
-                            "AND dta_emissao between TO_DATE('17/02/2022','dd/mm/yyyy') " +
-                            "AND TO_DATE('18/02/2022','dd/mm/yyyy')" +
+                            "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
+                            "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
                             "AND ((EMPRESA = 1 and REVENDA = 1 and DEPARTAMENTO = 15)) " +
                             "AND FI.ORIGEM IN(1104) " +
                             "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
