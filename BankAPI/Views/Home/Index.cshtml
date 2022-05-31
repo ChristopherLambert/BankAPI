@@ -29,8 +29,11 @@
 <script>
     @*var empresa = @Html.Raw(Json.Encode(Model.Nome));
     var revenda = @Html.Raw(Json.Encode(Model.Revenda));*@
-    $('#EmpresaNome').val(@Model?.Nome);
-    $('#RevendaNome').val(@Model?.Revenda);
+    window.onload = function () {
+        $('#EmpresaNome').val('@Model?.Nome');
+        $('#RevendaNome').val('@Model?.Revenda');
+    };
+
 
     function loading() {
         /*LOADING*/

@@ -30,6 +30,7 @@ namespace Infra.Repositorie
                     context.Database.EnsureCreated();
 
                     context.Empresa.Add(empresa);
+                    context.SaveChanges();
                     return true;
                 }
             }
@@ -49,6 +50,7 @@ namespace Infra.Repositorie
                     context.Database.EnsureCreated();
 
                     context.Empresa.Update(empresa);
+                    context.SaveChanges();
                     return true;
                 }
             }
@@ -91,6 +93,7 @@ namespace Infra.Repositorie
                     context.Database.EnsureCreated();
 
                     context.Retorno.Add(retorno);
+                    context.SaveChanges();
                     return true;
                 }
             }
