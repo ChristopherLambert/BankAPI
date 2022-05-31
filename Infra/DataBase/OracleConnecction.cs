@@ -43,6 +43,7 @@ namespace Infra.DataBase
 
         public static List<BradescoBoleto> GetFINTitulo()
         {
+            var listTitulos = new List<BradescoBoleto>();
             using (OracleConnection con = OracleDB.con)
             {
                 using (OracleCommand cmd = con.CreateCommand())
@@ -66,8 +67,6 @@ namespace Infra.DataBase
                             "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
 
                         OracleDataReader dataReader = cmd.ExecuteReader();
-                        var listTitulos = new List<BradescoBoleto>();
-
                         while (dataReader.Read())
                         {
                             var titulo = new BradescoBoleto();
@@ -83,6 +82,7 @@ namespace Infra.DataBase
                     catch(Exception ex)
                     {
                         Console.WriteLine("Oracle Failed: " + ex.Message);
+                        return null;
                     }
                 }
             }
