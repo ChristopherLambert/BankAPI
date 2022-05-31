@@ -49,8 +49,8 @@ namespace Infra.DataBase
                         cmd.BindByName = true;
 
                         cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
-                            "WHERE((FI.EMPRESA = 1 " +
-                            "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 " +
+                            "WHERE((FI.EMPRESA = 1 " + //CODIGO EMPRESA
+                            "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 " + // CODIGO REVENDA
                             "AND FI.BANCO = 104)) AND TIPO = 'CR' " +
                             "AND ((STATUS = 'EM' " +
                             "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
