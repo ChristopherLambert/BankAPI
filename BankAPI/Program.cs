@@ -1,12 +1,8 @@
 using Domain.Services;
 using Infra.DataBase;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,12 +19,9 @@ namespace BankAPI
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    Console.WriteLine("SECONDS");
-                    Console.WriteLine(DateTime.Now.Second.ToString());
-
                     //STARTING ORACLE
-                    //OracleDB oracleDB = new OracleDB();
-                    //OracleDB.GetFINTitulo();
+                    OracleDB oracleDB = new OracleDB();
+                    OracleDB.GetFINTitulo();
 
                     //STARTING SERVICE
                     new Task(async () =>
