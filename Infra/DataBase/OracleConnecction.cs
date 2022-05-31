@@ -21,6 +21,7 @@ namespace Infra.DataBase
         public OracleDB()
         {
             OracleDB.con = new OracleConnection(this.conString);
+            #region ExemploGeral
             //using (OracleConnection con = new OracleConnection(this.conString))
             //{
             //    using (OracleCommand cmd = con.CreateCommand())
@@ -37,6 +38,7 @@ namespace Infra.DataBase
             //        }
             //    }
             //}
+            #endregion
         }
 
         public static List<BradescoBoleto> GetFINTitulo()
