@@ -14,7 +14,7 @@ namespace Infra.DataBase
             if (!optionsBuilder.IsConfigured)
             {
                // optionsBuilder.UseMySQL("Server=10.100.1.65;User Id=administrador;Password=#uTestBLT22;Database=uTestBoleto");
-                optionsBuilder.UseMySQL("Server=10.100.1.65;User Id=ubratest;Password=T3sTBr#2;Database=uTestBoleto");
+                optionsBuilder.UseMySQL("Server=10.100.1.65;User Id=ubratestvpn;Password=T3sTBr#2;Database=uTestBoleto");
             }
 
             //optionsBuilder.UseMySQL("Server=10.100.1.65;User Id=administrador;Password=#uTestBLT22;Database=uTestBoleto", builder =>
