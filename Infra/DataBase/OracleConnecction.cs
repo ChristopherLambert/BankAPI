@@ -53,7 +53,7 @@ namespace Infra.DataBase
                         con.Open();
                         cmd.BindByName = true;
 
-                        if(empresa != null)
+                        if(empresa == null)
                         {
                             cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
                                 "WHERE((FI.EMPRESA = 1 " + //CODIGO EMPRESA
