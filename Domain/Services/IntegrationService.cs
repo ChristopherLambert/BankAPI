@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using Domain.Models;
-using System.Security.Claims;
 using Newtonsoft.Json;
-using System.IO;
-using System.Security.Cryptography;
+using Infra.DataBase;
+using Domain.Helper;
 
 namespace Domain.Services
 {
@@ -30,7 +26,7 @@ namespace Domain.Services
             {
                 try
                 {
-                    var token = BuildTokenV2();
+                    var token = BuildToken.BuildTokenV2(GetTokenBradesco);
                     var resp = RestApiV2.PostToken(IntegrationService.GetTokenBradesco, token.Token);
                     IntegrationService.tokenBradesco = resp.access_token;
                     Console.WriteLine("Resp Token Bradesco");
@@ -41,6 +37,11 @@ namespace Domain.Services
                     Console.WriteLine("Resp Token Bradesco Expecytion: " + ex.Message);
                 }
             }
+
+            new Task(async () =>
+            {
+                SericeOracle();
+            }).Start();
         }
 
         public static async Task PostRegistrarBoleto(BradescoBoleto boletoModel)
@@ -59,87 +60,23 @@ namespace Domain.Services
             }
         }
 
-        public static UserToken BuildTokenV1()
+        public static void SericeOracle()
         {
-            var claims = new[]
+            //STARTING ORACLE
+            OracleDB oracleDB = new OracleDB();
+            var listTitulos = OracleDB.GetFINTitulo();
+            foreach (var boleto in listTitulos)
             {
-                new Claim(JwtRegisteredClaimNames.Aud, GetTokenBradesco),
-                new Claim(JwtRegisteredClaimNames.Sub, "e55e6ce8-c55d-4bb0-b546-c19ec90a3f11"),
-                new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.Second.ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, DateTime.Now.AddMonths(1).Second.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("ver", "1.1")
-            };
-
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("BankAPIBoletoBradescoServopa"));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            // tempo de expiração do token: 1 hora
-            var expiration = DateTime.UtcNow.AddHours(1);
-            JwtSecurityToken token = new JwtSecurityToken(
-               issuer: null,
-               audience: null,
-               claims: claims,
-               expires: expiration,
-               signingCredentials: creds);
-
-            return new UserToken()
-            {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiration = expiration
-            };
-        }
-
-        public static UserToken BuildTokenV2()
-        {
-            try
-            {
-                string privateKeyPem = File.ReadAllText("C:\\temp\\Servopa.key.pem");
-
-                privateKeyPem = privateKeyPem.Replace("-----BEGIN PRIVATE KEY-----", "");
-                privateKeyPem = privateKeyPem.Replace("-----END PRIVATE KEY-----", "");
-
-                byte[] privateKeyRaw = Convert.FromBase64String(privateKeyPem);
-
-                RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
-                provider.ImportPkcs8PrivateKey(new ReadOnlySpan<byte>(privateKeyRaw), out _);
-                RsaSecurityKey rsaSecurityKey = new RsaSecurityKey(provider);
-
-                var now = DateTime.UtcNow;
-
-                var claims = new[] {
-                    new Claim(JwtRegisteredClaimNames.Aud, GetTokenBradesco),
-                    new Claim(JwtRegisteredClaimNames.Sub, "a666ae3f-0e0d-426c-bdc1-72992123016f"),
-                    new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Exp, new DateTime().AddMonths(2).Second.ToString("yyyyMMddHHmmssffff")),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim("ver", "1.1")
-                };
-
-                var handler = new JwtSecurityTokenHandler();
-
-                var expiration = now.AddMinutes(60);
-
-                var token = new JwtSecurityToken(
-                           issuer: null,
-                           audience: null,
-                           claims: claims,
-                           expires: expiration,
-                           signingCredentials: new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256)
-                );
-
-                return new UserToken()
+                try
                 {
-                    Token = new JwtSecurityTokenHandler().WriteToken(token),
-                    Expiration = expiration
-                };
+                    RestApiV2.PostBradesco(IntegrationService.GetTokenBradesco, boleto.ToModel());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("ERROR POST BRADESCO:" + ex.Message);
+                    throw;
+                }
             }
-
-            catch (Exception e)
-            {
-                return new UserToken();
-            }
-
         }
     }
 }

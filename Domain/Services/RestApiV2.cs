@@ -24,10 +24,10 @@ namespace Domain.Services
             return JsonConvert.DeserializeObject<AcessToken>(response.Content);
         }
 
-        public static string PostBradesco(string token)
+        public static string PostBradesco(string token, BradescoBoleto boleto)
         {
             var now = DateTime.UtcNow;
-            BradescoBoleto boleto = new BradescoBoleto();
+            //BradescoBoleto boleto = new BradescoBoleto();
 
             var privateKeyPem = File.ReadAllText("C:\\temp\\Servopa.key.pem");
             privateKeyPem = privateKeyPem.Replace("-----BEGIN PRIVATE KEY-----", "");
