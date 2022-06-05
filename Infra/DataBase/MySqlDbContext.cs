@@ -9,6 +9,8 @@ namespace Infra.DataBase
 
         public DbSet<Retorno> Retorno { get; set; }
 
+        public DbSet<Config> Config { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -28,11 +30,20 @@ namespace Infra.DataBase
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Config>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.TempodeCiclo).IsRequired();
+            });
+
             modelBuilder.Entity<Empresa>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Nome).IsRequired();
                 entity.Property(e => e.Revenda).IsRequired();
+                entity.Property(e => e.Banco).IsRequired();
+                entity.Property(e => e.Departamento).IsRequired();
+                entity.Property(e => e.Origem).IsRequired();
             });
 
             modelBuilder.Entity<Retorno>(entity =>

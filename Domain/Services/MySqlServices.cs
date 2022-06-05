@@ -14,7 +14,10 @@ namespace Domain.Services
             {
                 Id = empresa.Id,
                 Nome = empresa.Nome,
-                Revenda = empresa.Revenda
+                Revenda = empresa.Revenda,
+                Origem = empresa.Origem,
+                Departamento = empresa.Departamento,
+                Banco = empresa.Banco
             };
         }
 
@@ -24,7 +27,10 @@ namespace Domain.Services
            {
                Id = empresa.Id,
                Nome = empresa.Nome,
-               Revenda = empresa.Revenda
+               Revenda = empresa.Revenda,
+               Origem = empresa.Origem,
+               Departamento = empresa.Departamento,
+               Banco = empresa.Banco
            });
         }
 
@@ -34,7 +40,10 @@ namespace Domain.Services
             {
                 Id = empresa.Id,
                 Nome = empresa.Nome,
-                Revenda = empresa.Revenda
+                Revenda = empresa.Revenda,
+                Origem = empresa.Origem,
+                Departamento = empresa.Departamento,
+                Banco = empresa.Banco
             });
         }
 
@@ -50,7 +59,6 @@ namespace Domain.Services
                 TransacaoID = retorno.TransacaoID
             };
         }
-
 
         public static List<Retorno> GetAllRetorno()
         {

@@ -9,14 +9,29 @@
 
 <form>
     <div class="form-group">
-        <label for="exampleInputEmail1">Nome da Empresa </label>
+        <label for="exampleInputEmail1">Numero da Empresa </label>
         <input type="text" class="form-control" id="EmpresaNome" aria-describedby="EmpresaNome" placeholder="Nome da Empresa">
         <small id="EmpresaNome" class="form-text text-muted">Por favor coloque aqui o nome da empresa a integrar.</small>
     </div>
     <div class="form-group">
-        <label for="exampleInputEmail1">Nome da Revenda </label>
+        <label for="exampleInputEmail1">Numero da Revenda </label>
         <input type="text" class="form-control" id="RevendaNome" aria-describedby="RevendaNome" placeholder="Nome da Revenda">
         <small id="RevendaNome" class="form-text text-muted">Por favor coloque aqui o nome da revenda a integrar.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Numero do Banco </label>
+        <input type="text" class="form-control" id="BancoNumero" aria-describedby="BancoNumero" placeholder="Numero do Banco">
+        <small id="BancoNumero" class="form-text text-muted">Por favor coloque aqui o numero do banco a integrar.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Numero do Departamento </label>
+        <input type="text" class="form-control" id="DepartamentoNumero" aria-describedby="DepartamentoNumero" placeholder="Numero do Departamento">
+        <small id="DepartamentoNumero" class="form-text text-muted">Por favor coloque aqui o numero do departamento a integrar.</small>
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Numero da Origem </label>
+        <input type="text" class="form-control" id="OrigemNumero" aria-describedby="OrigemNumero" placeholder="Numero da Origem">
+        <small id="OrigemNumero" class="form-text text-muted">Por favor coloque aqui o numero da origem a integrar.</small>
     </div>
     @*<div class="form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -32,6 +47,9 @@
     window.onload = function () {
         $('#EmpresaNome').val('@Model?.Nome');
         $('#RevendaNome').val('@Model?.Revenda');
+        $('#BancoNumero').val('@Model?.Banco');
+        $('#DepartamentoNumero').val('@Model?.Departamento');
+        $('#OrigemNumero').val('@Model?.Origem');
     };
 
 
@@ -45,9 +63,13 @@
         });
     }
 
-    function salveData() {
+    function validaData() {
+
         const empresaNome = $('#EmpresaNome').val();
         const revendaNome = $('#RevendaNome').val();
+        const bancoNumero = $('#BancoNumero').val();
+        const departamentoNumero = $('#DepartamentoNumero').val();
+        const origemNumero = $('#OrigemNumero').val();
 
         if (!empresaNome) {
             Swal.fire({
@@ -56,7 +78,7 @@
                 text: 'Por favor preecha o nome da empresa.',
                 /*footer: '<a href="">Why do I have this issue?</a>'*/
             })
-            return;
+            return false;
         }
 
         if (!revendaNome) {
@@ -66,32 +88,76 @@
                 text: 'Por favor preecha o nome da revenda.',
                 /*footer: '<a href="">Why do I have this issue?</a>'*/
             })
-            return;
+            return false;
         }
 
-        loading();
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("Salvar", "Home")",
-            data: { empresa: empresaNome, revenda: revendaNome },
-            success: function (result) {
-                Swal.close();
-                if (result.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Dados salvos com sucesso!',
-                        /*text: 'Por favor preecha o nome da revenda.',*/
-                        /*footer: '<a href="">Why do I have this issue?</a>'*/
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Dados Invalidos!',
-                        text: 'Infelizmente não conseguimos salvar os dados, por favor contacte o administrador do sistema!',
-                        /*footer: '<a href="">Why do I have this issue?</a>'*/
-                    })
+        if (!bancoNumero) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o numero do banco.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+            return false;
+        }
+
+        if (!departamentoNumero) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o numero do departamento.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+            return false;
+        }
+
+        if (!origemNumero) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o numero da origem.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+            return false;
+        }
+
+        return true;
+
+    }
+
+    function salveData() {
+
+        const empresaNome = $('#EmpresaNome').val();
+        const revendaNome = $('#RevendaNome').val();
+        const bancoNumero = $('#BancoNumero').val();
+        const departamentoNumero = $('#DepartamentoNumero').val();
+        const origemNumero = $('#OrigemNumero').val();
+
+        if (validaData()) {
+            loading();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Salvar", "Home")",
+                data: { empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
+                success: function (result) {
+                    Swal.close();
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Dados salvos com sucesso!',
+                            /*text: 'Por favor preecha o nome da revenda.',*/
+                            /*footer: '<a href="">Why do I have this issue?</a>'*/
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Dados Invalidos!',
+                            text: 'Infelizmente não conseguimos salvar os dados, por favor contacte o administrador do sistema!',
+                            /*footer: '<a href="">Why do I have this issue?</a>'*/
+                        })
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 </script>

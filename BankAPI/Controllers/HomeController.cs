@@ -26,7 +26,10 @@ namespace BankAPI.Controllers
                 {
                     Id = empresa.Id,
                     Nome = empresa.Nome,
-                    Revenda = empresa.Revenda
+                    Revenda = empresa.Revenda,
+                    Banco = empresa.Banco,
+                    Origem = empresa.Origem,
+                    Departamento = empresa.Departamento
                 });
             }
             catch(Exception ex)
@@ -46,14 +49,17 @@ namespace BankAPI.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Salvar(string empresa, string revenda)
+        public IActionResult Salvar(string empresa, string revenda, string banco, string departamento, string origem)
         {
             try
             {
                 var resp = MySqlServices.UpdateEmpresa(new Empresa()
                 {
                     Nome = empresa,
-                    Revenda = revenda
+                    Revenda = revenda,
+                    Origem = origem,
+                    Departamento = departamento,
+                    Banco = banco
                 });
 
                 if (!resp)
@@ -61,7 +67,10 @@ namespace BankAPI.Controllers
                     resp = MySqlServices.AddEmpresa(new Empresa()
                     {
                         Nome = empresa,
-                        Revenda = revenda
+                        Revenda = revenda,
+                        Origem = origem,
+                        Departamento = departamento,
+                        Banco = banco
                     });
                 }
 
