@@ -41,7 +41,7 @@ namespace Infra.DataBase
             #endregion
         }
 
-        public static List<BradescoBoleto> GetFINTitulo()
+        public static List<BradescoBoleto> GetFINTitulo(Empresa empresa)
         {
             var listTitulos = new List<BradescoBoleto>();
             using (OracleConnection con = OracleDB.con)
@@ -53,24 +53,43 @@ namespace Infra.DataBase
                         con.Open();
                         cmd.BindByName = true;
 
-                        cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
-                            "WHERE((FI.EMPRESA = 1 " + //CODIGO EMPRESA
-                            "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 " + // CODIGO REVENDA
-                            "AND FI.BANCO = 104)) AND TIPO = 'CR' " +
-                            "AND ((STATUS = 'EM' " +
-                            "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
-                            "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
-                            "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
-                            "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
-                            "AND ((EMPRESA = 1 and REVENDA = 1 and DEPARTAMENTO = 15)) " +
-                            "AND FI.ORIGEM IN(1104) " +
-                            "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
+                        if(empresa != null)
+                        {
+                            cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
+                                "WHERE((FI.EMPRESA = 1 " + //CODIGO EMPRESA
+                                "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 " + // CODIGO REVENDA
+                                "AND FI.BANCO = 104)) AND TIPO = 'CR' " +
+                                "AND ((STATUS = 'EM' " +
+                                "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
+                                "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
+                                "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
+                                "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
+                                "AND ((EMPRESA = 1 and REVENDA = 1 and DEPARTAMENTO = 15)) " +
+                                "AND FI.ORIGEM IN(1104) " +
+                                "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
+                        }
+                        else
+                        {
+                            cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
+                                "WHERE((FI.EMPRESA = '" + empresa.Nome + "'" + //CODIGO EMPRESA
+                                "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 '" + empresa.Revenda + "'" + // CODIGO REVENDA
+                                "AND FI.BANCO = '" + empresa.Banco + "'" + ")) AND TIPO = 'CR' " +
+                                "AND ((STATUS = 'EM' " +
+                                "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
+                                "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
+                                "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
+                                "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
+                                "AND ((EMPRESA = 1 and REVENDA = 1 and DEPARTAMENTO = '" + empresa.Departamento + "'" + ")) " +
+                                "AND FI.ORIGEM IN('" + empresa.Origem + "'" + ") " +
+                                "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
+                        }
+                    
 
                         OracleDataReader dataReader = cmd.ExecuteReader();
                         while (dataReader.Read())
                         {
                             var titulo = new BradescoBoleto();
-                            string empresa = dataReader["EMPRESA"].ToString();
+                            string empresaTitulo = dataReader["EMPRESA"].ToString();
                             string revenda = dataReader["REVENDA"].ToString();
                             listTitulos.Add(titulo);
                         }

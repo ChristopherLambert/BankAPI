@@ -64,7 +64,16 @@ namespace Domain.Services
         {
             //STARTING ORACLE
             OracleDB oracleDB = new OracleDB();
-            var listTitulos = OracleDB.GetFINTitulo();
+            var empresa = MySqlServices.GetEmpresa(1);
+            var listTitulos = OracleDB.GetFINTitulo(new Infra.Entidades.Empresa()
+            {
+                Nome = empresa.Nome,
+                Revenda = empresa.Revenda,
+                Banco = empresa.Banco,
+                Origem = empresa.Origem,
+                Departamento = empresa.Departamento
+            });
+            //var listTitulos = OracleDB.GetFINTitulo(null);
             foreach (var boleto in listTitulos)
             {
                 try
