@@ -70,6 +70,7 @@ namespace Domain.Services
                 try
                 {
                     RestApiV2.PostBradesco(IntegrationService.GetTokenBradesco, boleto.ToModel());
+                    OracleDB.UpdateTitulo(1, boleto.nuTitulo); //NOSSO NUMERO
                 }
                 catch (Exception ex)
                 {

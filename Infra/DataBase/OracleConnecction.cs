@@ -87,6 +87,34 @@ namespace Infra.DataBase
                 }
             }
         }
+
+        public static void UpdateTitulo(int retorno, int nossoNumero)
+        {
+            var listTitulos = new List<BradescoBoleto>();
+            using (OracleConnection con = OracleDB.con)
+            {
+                using (OracleCommand cmd = con.CreateCommand())
+                {
+                    try
+                    {
+                        con.Open();
+                        cmd.BindByName = true;
+
+                        cmd.CommandText = "UPDATE FIN_TITULO" +
+                            "SET ENVIADO  = '" + retorno + "'," +
+                            "WHERE NOSSONUMERO = '" + nossoNumero + "';";
+
+                        OracleDataReader dataReader = cmd.ExecuteReader();
+                        dataReader.Close();
+                        dataReader.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Oracle Failed: " + ex.Message);
+                    }
+                }
+            }
+        }
     }
 }
 
