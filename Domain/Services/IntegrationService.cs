@@ -6,6 +6,8 @@ using System.Text;
 using Domain.Models;
 using System.Security.Claims;
 using Newtonsoft.Json;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace Domain.Services
 {
@@ -28,8 +30,9 @@ namespace Domain.Services
             {
                 try
                 {
-                    var resp = await RestApi.PostAsync(IntegrationService.GetTokenBradesco);
-                    IntegrationService.tokenBradesco = resp.Content.ToString();
+                    var token = BuildTokenV2();
+                    var resp = RestApiV2.PostToken(IntegrationService.GetTokenBradesco, token.Token);
+                    IntegrationService.tokenBradesco = resp.access_token;
                     Console.WriteLine("Resp Token Bradesco");
                     Console.WriteLine(resp);
                 }
@@ -56,7 +59,7 @@ namespace Domain.Services
             }
         }
 
-        public static UserToken BuildToken()
+        public static UserToken BuildTokenV1()
         {
             var claims = new[]
             {
@@ -85,6 +88,58 @@ namespace Domain.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };
+        }
+
+        public static UserToken BuildTokenV2()
+        {
+            try
+            {
+                string privateKeyPem = File.ReadAllText("C:\\temp\\Servopa.key.pem");
+
+                privateKeyPem = privateKeyPem.Replace("-----BEGIN PRIVATE KEY-----", "");
+                privateKeyPem = privateKeyPem.Replace("-----END PRIVATE KEY-----", "");
+
+                byte[] privateKeyRaw = Convert.FromBase64String(privateKeyPem);
+
+                RSACryptoServiceProvider provider = new RSACryptoServiceProvider();
+                provider.ImportPkcs8PrivateKey(new ReadOnlySpan<byte>(privateKeyRaw), out _);
+                RsaSecurityKey rsaSecurityKey = new RsaSecurityKey(provider);
+
+                var now = DateTime.UtcNow;
+
+                var claims = new[] {
+                    new Claim(JwtRegisteredClaimNames.Aud, GetTokenBradesco),
+                    new Claim(JwtRegisteredClaimNames.Sub, "a666ae3f-0e0d-426c-bdc1-72992123016f"),
+                    new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Exp, new DateTime().AddMonths(2).Second.ToString("yyyyMMddHHmmssffff")),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("ver", "1.1")
+                };
+
+                var handler = new JwtSecurityTokenHandler();
+
+                var expiration = now.AddMinutes(60);
+
+                var token = new JwtSecurityToken(
+                           issuer: null,
+                           audience: null,
+                           claims: claims,
+                           expires: expiration,
+                           signingCredentials: new SigningCredentials(rsaSecurityKey, SecurityAlgorithms.RsaSha256)
+                );
+
+                return new UserToken()
+                {
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Expiration = expiration
+                };
+            }
+
+            catch (Exception e)
+            {
+                return new UserToken();
+            }
+
         }
     }
 }
