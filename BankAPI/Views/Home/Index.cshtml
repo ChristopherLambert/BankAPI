@@ -138,7 +138,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Salvar", "Home")",
-                data: { empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
+                data: { id: '@Model?.Id', empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
                 success: function (result) {
                     Swal.close();
                     if (result.success) {

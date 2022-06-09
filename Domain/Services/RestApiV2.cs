@@ -12,8 +12,8 @@ namespace Domain.Services
     {
         public static AcessToken PostToken(string url, string tokenBradesco)
         {
-            //var client = new RestClient("https://proxy.api.prebanco.com.br");
-            var client = new RestClient(url);
+            var client = new RestClient("https://proxy.api.prebanco.com.br");
+            //var client = new RestClient(url);
             var request = new RestRequest("/auth/server/v1.1/token", Method.Post);
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer", ParameterType.GetOrPost);

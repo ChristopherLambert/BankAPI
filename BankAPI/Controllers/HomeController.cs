@@ -49,12 +49,13 @@ namespace BankAPI.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Salvar(string empresa, string revenda, string banco, string departamento, string origem)
+        public IActionResult Salvar(int id, string empresa, string revenda, string banco, string departamento, string origem)
         {
             try
             {
                 var resp = MySqlServices.UpdateEmpresa(new Empresa()
                 {
+                    Id = id,
                     Nome = empresa,
                     Revenda = revenda,
                     Origem = origem,
