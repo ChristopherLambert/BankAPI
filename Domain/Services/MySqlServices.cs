@@ -2,14 +2,19 @@
 using Infra.Repositorie;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace Domain.Services
 {
     public static class MySqlServices
     {
+        // EMPRESA 
         public static Empresa GetEmpresa(int id)
         {
             var empresa = MySqlRepositorie.GetEmpresa(id);
+            if (empresa == null)
+                return null;
+
             return new Empresa()
             {
                 Id = empresa.Id,
@@ -47,6 +52,7 @@ namespace Domain.Services
             });
         }
 
+        // RETORNO
         public static Retorno GetRetorno(int id)
         {
             var retorno = MySqlRepositorie.GetRetorno(id);
@@ -54,6 +60,7 @@ namespace Domain.Services
             {
                 Id = retorno.Id,
                 Empresa = retorno.Empresa,
+                Cliente = retorno.Cliente,
                 Status = retorno.Status,
                 Atualizacao = retorno.Atualizacao,
                 TransacaoID = retorno.TransacaoID
@@ -67,6 +74,21 @@ namespace Domain.Services
             {
                 Id = rep.Id,
                 Empresa = rep.Empresa,
+                Cliente = rep.Cliente,
+                Status = rep.Status,
+                Atualizacao = rep.Atualizacao,
+                TransacaoID = rep.TransacaoID
+            }).ToList();
+        }
+
+        public static List<Retorno> GetDateRetorno(DateTime date)
+        {
+            return MySqlRepositorie.GetDateRetorno(date).Select(rep =>
+            new Retorno()
+            {
+                Id = rep.Id,
+                Empresa = rep.Empresa,
+                Cliente = rep.Cliente,
                 Status = rep.Status,
                 Atualizacao = rep.Atualizacao,
                 TransacaoID = rep.TransacaoID
@@ -79,6 +101,7 @@ namespace Domain.Services
             {
                 Id = retorno.Id,
                 Empresa = retorno.Empresa,
+                Cliente = retorno.Cliente,
                 Status = retorno.Status,
                 Atualizacao = retorno.Atualizacao,
                 TransacaoID = retorno.TransacaoID

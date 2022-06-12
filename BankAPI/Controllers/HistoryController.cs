@@ -22,13 +22,15 @@ namespace BankAPI.Controllers
         {
             try
             {
-                var retornos = MySqlServices.GetAllRetorno();
+                // var retornos = MySqlServices.GetAllRetorno();
+                var retornos = MySqlServices.GetDateRetorno(DateTime.Now);
 
                 return View(retornos.Select(
                 rep => new HistoricoViewModel()
                      {
                          Id = rep.Id,
                          Empresa = rep.Empresa,
+                         Cliente = rep.Cliente,
                          Status = rep.Status,
                          Update = rep.Atualizacao
                      }).ToList());

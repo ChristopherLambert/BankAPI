@@ -68,7 +68,7 @@ namespace Infra.DataBase
                                   "LEFT JOIN FAT_PESSOA_FISICA PF ON PF.CLIENTE = FI.CLIENTE " +
                                   "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
                                   "WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
-                                  "AND ´ROWNUM = 1";
+                                  "AND ROWNUM = 1";
                         }
                         else
                         {

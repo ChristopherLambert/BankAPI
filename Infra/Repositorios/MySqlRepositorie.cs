@@ -8,6 +8,7 @@ namespace Infra.Repositorie
 {
     public static class MySqlRepositorie
     {
+        // EMPRESA
         public static Empresa GetEmpresa(int id)
         {
             using (var context = new MySqlDbContext())
@@ -60,6 +61,7 @@ namespace Infra.Repositorie
             }
         }
 
+        // RETORNO
         public static Retorno GetRetorno(int id)
         {
             using (var context = new MySqlDbContext())
@@ -83,6 +85,17 @@ namespace Infra.Repositorie
             }
         }
 
+        public static List<Retorno> GetDateRetorno(DateTime date)
+        {
+            using (var context = new MySqlDbContext())
+            {
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
+                return context.Retorno.Where(re => re.InsertData.Day == date.Day).ToList();
+            }
+        }
+
         public static bool AddRetorno(Retorno retorno)
         {
             try
@@ -92,6 +105,8 @@ namespace Infra.Repositorie
                     // Creates the database if not exists
                     context.Database.EnsureCreated();
 
+                    retorno.UpdateData = DateTime.Now;
+                    retorno.InsertData = DateTime.Now;
                     context.Retorno.Add(retorno);
                     context.SaveChanges();
                     return true;
