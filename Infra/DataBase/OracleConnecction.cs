@@ -55,24 +55,23 @@ namespace Infra.DataBase
 
                         if(empresa == null)
                         {
-                            cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
-                                "WHERE((FI.EMPRESA = 1 " + //CODIGO EMPRESA
-                                "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = 1 " + // CODIGO REVENDA
-                                "AND FI.BANCO = 104)) AND TIPO = 'CR' " +
-                                "AND ((STATUS = 'EM' " +
-                                "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
-                                "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
-                                "AND dta_emissao between TO_DATE('30/05/2022', 'dd/mm/yyyy')" +
-                                "AND TO_DATE('31/05/2022', 'dd/mm/yyyy')" +
-                                //"AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
-                                //"AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
-                                "AND ((EMPRESA = 1 and REVENDA = 1 and DEPARTAMENTO = 15)) " +
-                                "AND FI.ORIGEM IN(1104) " +
-                                "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
+                            cmd.CommandText = "SELECT " +
+                              "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
+                              "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
+                              "FI.CLIENTE AS FI_CLIENTE, FI.DTA_EMISSAO AS FI_DTA_EMISSAO, FI.DTA_VENCIMENTO AS FI_DTA_VENCIMENTO, " +
+                              "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_COBRANCA AS FAT_LOGRADOURO_COBRANCA, " +
+                              "FAT.NUMERO_COBRANCA AS FAT_NUMERO_COBRANCA, FAT.CEP_COBRANCA AS FAT_CEP_COBRANCA, FAT.BAIRRO_COBRANCA AS FAT_BAIRRO_COBRANCA, " +
+                              "FAT.MUNICIPIO_COBRANCA AS FAT_MUNICIPIO_COBRANCA, FAT.UF_COBRANCA AS FAT_UF_COBRANCA, PJ.CGC AS PJ_CGC, PF.CPF AS PF_CPF " +
+                                  "FROM FIN_TITULO FI " +
+                                  "INNER JOIN FAT_CLIENTE FAT ON FAT.CLIENTE = FI.CLIENTE " +
+                                  "INNER JOIN GER_REVENDA REV ON REV.REVENDA = FI.REVENDA " +
+                                  "LEFT JOIN FAT_PESSOA_FISICA PF ON PF.CLIENTE = FI.CLIENTE " +
+                                  "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
+                                  "WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
+                                  "AND ´ROWNUM = 1";
                         }
                         else
                         {
-
                             cmd.CommandText = "SELECT " +
                                 "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
                                 "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
@@ -85,21 +84,21 @@ namespace Infra.DataBase
                                     "INNER JOIN GER_REVENDA REV ON REV.REVENDA = FI.REVENDA " +
                                     "LEFT JOIN FAT_PESSOA_FISICA PF ON PF.CLIENTE = FI.CLIENTE " +
                                     "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
-                                    "WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
-                                    "AND rownum = 1";
+                                    // "WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
+                                    // "AND ´ROWNUM = 1";
 
-                            //cmd.CommandText = "SELECT* FROM FIN_TITULO FI " +
-                            //    "WHERE((FI.EMPRESA = '" + empresa.Nome + "'" + //CODIGO EMPRESA
-                            //    "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = '" + empresa.Revenda + "'" + // CODIGO REVENDA
-                            //    "AND FI.BANCO = '" + empresa.Banco + "'" + ")) AND TIPO = 'CR' " +
-                            //    "AND ((STATUS = 'EM' " +
-                            //    "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
-                            //    "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
-                            //    "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
-                            //    "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
-                            //    "AND ((EMPRESA = '" + empresa.Nome + "'" + " and REVENDA = '" + empresa.Revenda + "'" + " and DEPARTAMENTO = '" + empresa.Departamento + "'" + ")) " +
-                            //    "AND FI.ORIGEM IN('" + empresa.Origem + "'" + ") " +
-                            //    "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
+                                    // FILTROS
+                                    "WHERE((FI.EMPRESA = '" + empresa.Nome + "'" + //CODIGO EMPRESA
+                                    "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = '" + empresa.Revenda + "'" + // CODIGO REVENDA
+                                    "AND FI.BANCO = '" + empresa.Banco + "'" + ")) AND TIPO = 'CR' " +
+                                    "AND ((STATUS = 'EM' " +
+                                    "AND ((ENVIADO IS NULL OR ENVIADO = 0)) OR(STATUS = 'PT' " +
+                                    "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
+                                    "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
+                                    "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
+                                    "AND ((EMPRESA = '" + empresa.Nome + "'" + " and REVENDA = '" + empresa.Revenda + "'" + " and DEPARTAMENTO = '" + empresa.Departamento + "'" + ")) " +
+                                    "AND FI.ORIGEM IN('" + empresa.Origem + "'" + ") " +
+                                    "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
                         }
                     
 
