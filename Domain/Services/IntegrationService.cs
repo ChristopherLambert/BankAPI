@@ -79,14 +79,14 @@ namespace Domain.Services
             //     });
 
             #region TesteRetorno
-            MySqlServices.AddRetorno(new Entidades.Retorno()
-            {
-                Empresa = "TESTE",
-                Cliente = "TESTE",
-                Atualizacao = string.Empty,
-                Status = "REMESSA GERADA",
-                TransacaoID = Guid.NewGuid().ToString()
-            });
+            //MySqlServices.AddRetorno(new Entidades.Retorno()
+            //{
+            //    Empresa = "TESTE",
+            //    Cliente = "TESTE",
+            //    Atualizacao = string.Empty,
+            //    Status = "REMESSA GERADA",
+            //    TransacaoID = Guid.NewGuid().ToString()
+            //});
             #endregion
 
             foreach (var boleto in listTitulos)

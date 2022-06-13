@@ -9,8 +9,20 @@
 }
 <br />
 
+<form>
+    <div class="form-group form-group-sm">
+        <div class="col-md-6">
+            <label for="date">Filtro por Data </label>
+            @Html.TextBox("date", null, new { @class = "form-control datepicker" })
+        </div>
+
+        <button type="button" style="float: right; margin-bottom: 8px; margin-top: -34px;" class="btn btn-primary" onclick="filter()">FILTRAR</button>
+    </div>
+</form>
+
 <div class="table-responsive">
-    <table class="table table-bordered table-condensed table-striped table-hover sortable">
+    <table id="tableHistorico"
+           class="table table-bordered table-condensed table-striped table-hover sortable">
         @if (Model.Count() == 0)
         {
             <tr>
@@ -23,6 +35,7 @@
                 <tr class="danger">
                     <th data-defaultsign="1000">Transação ID</th>
                     <th data-defaultsign="AZ">Empresa</th>
+                    <th data-defaultsign="AZ">Cliente</th>
                     <th data-defaultsign="AZ">Status</th>
                     <th data-defaultsign="2020">Atualização</th>
                 </tr>
@@ -33,10 +46,51 @@
                 <tr>
                     <td>@item.Id</td>
                     <td>@item.Empresa</td>
-                    <td>@item.Status</td>
+                    <td>@item.Cliente</td>
+
+                    @if (item.Status.Contains("GERADA"))
+                    {
+                        <td> <span style="background-color: green; color: white; padding: 4px;"> @item.Status </span></td>
+                    }
+                    else
+                    {
+                        <td> <span style="background-color: red; color: white; padding: 4px;"> @item.Status </span></td>
+                    }
+
                     <td>@item.Update</td>
                 </tr>
             }
         }
     </table>
-</div>  
+</div>
+
+<script>
+    function loading() {
+        /*LOADING*/
+        Swal.fire({
+            title: 'Loading',
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        });
+    }
+
+    function filter() {
+
+        const dateFilter = $('#date').val();
+
+        if (dateFilter != null) {
+            loading();
+            var urlFilte = "https://localhost:44354/History?date=" + dateFilter;
+            window.location.href = urlFilte;
+        }
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o filtro.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+        }
+    }
+</script>

@@ -90,7 +90,7 @@ namespace Domain.Services
                 Empresa = rep.Empresa,
                 Cliente = rep.Cliente,
                 Status = rep.Status,
-                Atualizacao = rep.Atualizacao,
+                Atualizacao = /*rep.Atualizacao,*/ rep.UpdateData.ToString("dd/MM/yyyy"),
                 TransacaoID = rep.TransacaoID
             }).ToList();
         }
