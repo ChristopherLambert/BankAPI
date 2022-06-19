@@ -54,7 +54,11 @@
                     }
                     else
                     {
-                        <td> <span style="background-color: red; color: white; padding: 4px;"> @item.Status </span></td>
+                        <td onclick="openError()" style="cursor: pointer;"> 
+                            <span style="background-color: red; color: white; padding: 4px;">
+                                @item.Status 
+                            </span>
+                        </td>
                     }
 
                     <td>@item.Update</td>
@@ -73,6 +77,15 @@
                 Swal.showLoading()
             }
         });
+    }
+
+    function openError() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Falha no envio!',
+            text: 'Something went wrong!',
+            /* footer: '<a href="">Why do I have this issue?</a>'*/
+        })
     }
 
     function filter() {

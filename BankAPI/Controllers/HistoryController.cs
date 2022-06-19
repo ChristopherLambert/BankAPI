@@ -19,12 +19,26 @@ namespace BankAPI.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string date)
         {
             try
             {
-                // var retornos = MySqlServices.GetAllRetorno();
-                var retornos = MySqlServices.GetDateRetorno(DateTime.Now);
+                List<Retorno> retornos = null;
+                if (string.IsNullOrEmpty(date))
+                {
+                    //retornos = MySqlServices.GetAllRetorno();
+                    retornos = MySqlServices.GetDateRetorno(DateTime.Now);
+                }
+                else
+                {
+                    string[] validformats = new[] {"dd/MM/yyyy" , "MM/dd/yyyy", "yyyy/MM/dd", "MM/dd/yyyy HH:mm:ss",
+                                        "MM/dd/yyyy hh:mm tt", "yyyy-MM-dd HH:mm:ss, fff" };
+
+                    CultureInfo provider = new CultureInfo("pt-BR");
+                    DateTime dateTime = DateTime.ParseExact(date, validformats, provider);
+
+                    retornos = MySqlServices.GetDateRetorno(dateTime);
+                }
 
                 return View(retornos.Select(
                 rep => new HistoricoViewModel()
