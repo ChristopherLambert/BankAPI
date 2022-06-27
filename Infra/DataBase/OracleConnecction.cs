@@ -114,6 +114,7 @@ namespace Infra.DataBase
                             try
                             {
                                 var titulo = new BradescoBoleto();
+                                titulo.registraTitulo = 1;
                                 titulo.nuCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(0,9));            
                                 // titulo.filialCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(9, 3)); // **
                                 titulo.filialCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(7, 3));
