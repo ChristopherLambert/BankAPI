@@ -49,10 +49,14 @@ namespace Infra.DataBase
             modelBuilder.Entity<Retorno>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Empresa).IsRequired();
-                entity.Property(d => d.Atualizacao);
                 entity.Property(d => d.TransacaoID);
+                entity.Property(e => e.Empresa).IsRequired();
+                entity.Property(d => d.Cliente);
+                entity.Property(d => d.Ocorrencia);
+                entity.Property(d => d.Valor);
                 entity.Property(d => d.Status);
+                entity.Property(d => d.InsertData).IsRequired();
+                entity.Property(d => d.UpdateData).IsRequired();
             });
         }
     }

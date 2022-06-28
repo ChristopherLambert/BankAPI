@@ -79,3 +79,4 @@ namespace Infra.Entidades
         public decimal vlNominalTitulo { get; set; }
     }
 }
+// https://github.com/wmixvideo/bradesco-boleto-registro/blob/master/src/main/java/com/github/wmixvideo/bradescoboleto/classes/BBRRegistroEntradaBoleto.java

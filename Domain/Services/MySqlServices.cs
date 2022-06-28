@@ -59,11 +59,12 @@ namespace Domain.Services
             return new Retorno()
             {
                 Id = retorno.Id,
+                TransacaoID = retorno.TransacaoID,
                 Empresa = retorno.Empresa,
                 Cliente = retorno.Cliente,
                 Status = retorno.Status,
-                Atualizacao = retorno.Atualizacao,
-                TransacaoID = retorno.TransacaoID
+                Ocorrencia = retorno.Ocorrencia,
+
             };
         }
 
@@ -73,11 +74,13 @@ namespace Domain.Services
             new Retorno()
             {
                 Id = rep.Id,
+                TransacaoID = rep.TransacaoID,
                 Empresa = rep.Empresa,
                 Cliente = rep.Cliente,
+                Ocorrencia = rep.Ocorrencia,
+                Valor = rep.Valor,
                 Status = rep.Status,
-                Atualizacao = rep.Atualizacao,
-                TransacaoID = rep.TransacaoID
+                InsertData = rep.InsertData.ToString("dd/MM/yyyy")
             }).ToList();
         }
 
@@ -87,24 +90,27 @@ namespace Domain.Services
             new Retorno()
             {
                 Id = rep.Id,
+                TransacaoID = rep.TransacaoID,
                 Empresa = rep.Empresa,
                 Cliente = rep.Cliente,
+                Ocorrencia = rep.Ocorrencia,
+                Valor = rep.Valor,
                 Status = rep.Status,
-                Atualizacao = /*rep.Atualizacao,*/ rep.UpdateData.ToString("dd/MM/yyyy"),
-                TransacaoID = rep.TransacaoID
+                InsertData = rep.InsertData.ToString("dd/MM/yyyy")
             }).ToList();
         }
 
-        public static bool AddRetorno(Retorno retorno)
+        public static bool AddRetorno(Retorno rep)
         {
             return MySqlRepositorie.AddRetorno(new Infra.Entidades.Retorno()
             {
-                Id = retorno.Id,
-                Empresa = retorno.Empresa,
-                Cliente = retorno.Cliente,
-                Status = retorno.Status,
-                Atualizacao = retorno.Atualizacao,
-                TransacaoID = retorno.TransacaoID
+                Id = rep.Id,
+                TransacaoID = rep.TransacaoID,
+                Empresa = rep.Empresa,
+                Cliente = rep.Cliente,
+                Ocorrencia = rep.Ocorrencia,
+                Valor = rep.Valor,
+                Status = rep.Status
             });
         }
     }

@@ -78,17 +78,6 @@ namespace Domain.Services
             //         Departamento = empresa.Departamento
             //     });
 
-            #region TesteRetorno
-            //MySqlServices.AddRetorno(new Entidades.Retorno()
-            //{
-            //    Empresa = "TESTE",
-            //    Cliente = "TESTE",
-            //    Atualizacao = string.Empty,
-            //    Status = "REMESSA GERADA",
-            //    TransacaoID = Guid.NewGuid().ToString()
-            //});
-            #endregion
-
             foreach (var boleto in listTitulos)
             {
                 try
@@ -98,9 +87,10 @@ namespace Domain.Services
                     {
                         MySqlServices.AddRetorno(new Entidades.Retorno()
                         {
+                            Titulo = boleto.nuTitulo.ToString(),
+                            Valor = boleto.vlNominalTitulo.ToString(),
                             Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
                             Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                            Atualizacao = string.Empty,
                             Status = "REMESSA GERADA",
                             TransacaoID = Guid.NewGuid().ToString()
                         });
@@ -109,9 +99,11 @@ namespace Domain.Services
                     else {
                         MySqlServices.AddRetorno(new Entidades.Retorno()
                         {
+                            Titulo = boleto.nuTitulo.ToString(),
+                            Valor = boleto.vlNominalTitulo.ToString(),
                             Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
                             Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                            Atualizacao = string.Empty,
+                            Ocorrencia = resp.errosValidacao[0].ToString(),
                             Status = "REMESSA COM FALHA",
                             TransacaoID = Guid.NewGuid().ToString()
                         });
@@ -122,9 +114,11 @@ namespace Domain.Services
                 {
                     MySqlServices.AddRetorno(new Entidades.Retorno()
                     {
+                        Titulo = boleto.nuTitulo.ToString(),
+                        Valor = boleto.vlNominalTitulo.ToString(),
                         Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
                         Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                        Atualizacao = string.Empty,
+                        Ocorrencia = ex.Message,
                         Status = "REMESSA COM EXCPETION",
                         TransacaoID = Guid.NewGuid().ToString()
                     });

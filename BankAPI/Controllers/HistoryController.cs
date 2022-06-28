@@ -44,10 +44,13 @@ namespace BankAPI.Controllers
                 rep => new HistoricoViewModel()
                      {
                          Id = rep.Id,
+                         TransacaoID = rep.TransacaoID,
                          Empresa = rep.Empresa,
                          Cliente = rep.Cliente,
                          Status = rep.Status,
-                         Update = rep.Atualizacao
+                         Valor = rep.Valor,
+                         Ocorrencia = rep.Ocorrencia,
+                         InsertData = rep.InsertData,
                      }).ToList());
             }
             catch(Exception ex)

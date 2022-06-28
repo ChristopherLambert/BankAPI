@@ -55,7 +55,7 @@ namespace Infra.DataBase
 
                         if(empresa == null)
                         {
-                            cmd.CommandText = "SELECT " +
+                            cmd.CommandText = "SELECT FI.VAL_TITULO AS FI_VAL_TITULO," +
                               "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
                               "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
                               "FI.CLIENTE AS FI_CLIENTE, FI.DTA_EMISSAO AS FI_DTA_EMISSAO, FI.DTA_VENCIMENTO AS FI_DTA_VENCIMENTO, " +
@@ -115,6 +115,8 @@ namespace Infra.DataBase
                             {
                                 var titulo = new BradescoBoleto();
                                 titulo.registraTitulo = 1;
+                                titulo.vlNominalTitulo = Convert.ToInt64(dataReader["FI_VAL_TITULO"]);
+
                                 titulo.nuCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(0,9));            
                                 // titulo.filialCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(9, 3)); // **
                                 titulo.filialCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(7, 3));
