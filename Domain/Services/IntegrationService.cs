@@ -103,7 +103,7 @@ namespace Domain.Services
                             Valor = boleto.vlNominalTitulo.ToString(),
                             Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
                             Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                            Ocorrencia = resp.errosValidacao[0].ToString(),
+                            Ocorrencia = "Codigo: " + resp.codigo + " Mensage: " + resp.errosValidacao[0].ToString(),
                             Status = "REMESSA COM FALHA",
                             TransacaoID = Guid.NewGuid().ToString()
                         });
@@ -118,7 +118,7 @@ namespace Domain.Services
                         Valor = boleto.vlNominalTitulo.ToString(),
                         Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
                         Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                        Ocorrencia = ex.Message,
+                        Ocorrencia = " Mensage Excpetion: " + ex.Message,
                         Status = "REMESSA COM EXCPETION",
                         TransacaoID = Guid.NewGuid().ToString()
                     });
