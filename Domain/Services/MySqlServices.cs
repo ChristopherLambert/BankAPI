@@ -21,6 +21,7 @@ namespace Domain.Services
             {
                 Id = empresa.Id,
                 Nome = empresa.Nome,
+                Numero = empresa.Numero,
                 Revenda = empresa.Revenda,
                 Origem = empresa.Origem,
                 Departamento = empresa.Departamento,
@@ -35,6 +36,7 @@ namespace Domain.Services
             {
                 Id = rep.Id,
                 Nome = rep.Nome,
+                Numero = rep.Numero,
                 Revenda = rep.Revenda,
                 Origem = rep.Origem,
                 Departamento = rep.Departamento,
@@ -46,8 +48,8 @@ namespace Domain.Services
         {
             var resp = MySqlRepositorie.AddEmpresa(new Infra.Entidades.Empresa()
             {
-                Id = empresa.Id,
                 Nome = empresa.Nome,
+                Numero = empresa.Numero,
                 Revenda = empresa.Revenda,
                 Origem = empresa.Origem,
                 Departamento = empresa.Departamento,
@@ -67,6 +69,7 @@ namespace Domain.Services
             {
                 Id = empresa.Id,
                 Nome = empresa.Nome,
+                Numero = empresa.Numero,
                 Revenda = empresa.Revenda,
                 Origem = empresa.Origem,
                 Departamento = empresa.Departamento,

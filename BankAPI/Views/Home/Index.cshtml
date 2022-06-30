@@ -16,55 +16,82 @@
 </div>
 
 <form>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Numero da Empresa </label>
-        <input type="text" class="form-control" id="EmpresaNome" aria-describedby="EmpresaNome" placeholder="Nome da Empresa">
-        <small id="EmpresaNome" class="form-text text-muted">Por favor coloque aqui o nome da empresa a integrar.</small>
+
+    <div class="row">
+        <div class="col-6" style="float: right">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Nome da Empresa </label>
+                <input type="text" class="form-control" id="EmpresaNome" aria-describedby="EmpresaNome" placeholder="Nome da Empresa">
+                <small id="EmpresaNome" class="form-text text-muted">Por favor coloque aqui o nome da empresa a integrar.</small>
+            </div>
+        </div>
+        <div class="col-6" style="float: right">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Numero da Empresa </label>
+                <input type="text" class="form-control" id="EmpresaNumero" aria-describedby="EmpresaNumero" placeholder="Numero da Empresa">
+                <small id="EmpresaNumero" class="form-text text-muted">Por favor coloque aqui o numero da empresa a integrar.</small>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Numero da Revenda </label>
-        <input type="text" class="form-control" id="RevendaNome" aria-describedby="RevendaNome" placeholder="Nome da Revenda">
-        <small id="RevendaNome" class="form-text text-muted">Por favor coloque aqui o nome da revenda a integrar.</small>
+
+    <div class="row">
+        <div class="col-6" style="float: right">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Numero da Revenda </label>
+                <input type="text" class="form-control" id="RevendaNome" aria-describedby="RevendaNome" placeholder="Nome da Revenda">
+                <small id="RevendaNome" class="form-text text-muted">Por favor coloque aqui o nome da revenda a integrar.</small>
+            </div>
+        </div>
+        <div class="col-6" style="float: right">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Numero do Banco </label>
+                <input type="text" class="form-control" id="BancoNumero" aria-describedby="BancoNumero" placeholder="Numero do Banco">
+                <small id="BancoNumero" class="form-text text-muted">Por favor coloque aqui o numero do banco a integrar.</small>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Numero do Banco </label>
-        <input type="text" class="form-control" id="BancoNumero" aria-describedby="BancoNumero" placeholder="Numero do Banco">
-        <small id="BancoNumero" class="form-text text-muted">Por favor coloque aqui o numero do banco a integrar.</small>
+
+    <div class="row">
+        <div class="col-6" style="float: right">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Numero do Departamento </label>
+                <input type="text" class="form-control" id="DepartamentoNumero" aria-describedby="DepartamentoNumero" placeholder="Numero do Departamento">
+                <small id="DepartamentoNumero" class="form-text text-muted">Por favor coloque aqui o numero do departamento a integrar.</small>
+            </div>
+        </div>
+        <div class="col-6" style="float: right">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Numero da Origem </label>
+                <input type="text" class="form-control" id="OrigemNumero" aria-describedby="OrigemNumero" placeholder="Numero da Origem">
+                <small id="OrigemNumero" class="form-text text-muted">Por favor coloque aqui o numero da origem a integrar.</small>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Numero do Departamento </label>
-        <input type="text" class="form-control" id="DepartamentoNumero" aria-describedby="DepartamentoNumero" placeholder="Numero do Departamento">
-        <small id="DepartamentoNumero" class="form-text text-muted">Por favor coloque aqui o numero do departamento a integrar.</small>
-    </div>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Numero da Origem </label>
-        <input type="text" class="form-control" id="OrigemNumero" aria-describedby="OrigemNumero" placeholder="Numero da Origem">
-        <small id="OrigemNumero" class="form-text text-muted">Por favor coloque aqui o numero da origem a integrar.</small>
-    </div>
+
     @*<div class="form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>*@
-<div class="row">
-     @if (Model.EmpresaId != 0)
-     {
-           <div class="col-8"> </div>
-           <div class="col-2" style="float: right">
-               <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">ATUALIZAR</button>
-           </div>
-           <div class="col-2" style="float: right ">
-               <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
-           </div>
-      }
-      else
-      {
-          <div class="col-10"> </div>
-          <div class="col-2" style="float: right ">
-                <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
-          </div>
-      }
 
- </div>
+    <div class="row">
+        @if (Model.EmpresaId != 0)
+        {
+<div class="col-8"> </div>
+                <div class="col-2" style="float: right">
+                    <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">ATUALIZAR</button>
+                </div>
+                                <div class="col-2" style="float: right ">
+                                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
+                                </div> }
+                            else
+                            {
+                <div class="col-10"> </div>
+                                <div class="col-2" style="float: right ">
+                                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
+                                </div>}
+
+    </div>
 </form>
 
 <script>
@@ -72,6 +99,7 @@
     var revenda = @Html.Raw(Json.Encode(Model.Revenda));*@
     window.onload = function () {
         $('#EmpresaNome').val('@Model?.MainEmpresa?.Nome');
+        $('#EmpresaNumero').val('@Model?.MainEmpresa?.Numero');
         $('#RevendaNome').val('@Model?.MainEmpresa?.Revenda');
         $('#BancoNumero').val('@Model?.MainEmpresa?.Banco');
         $('#DepartamentoNumero').val('@Model?.MainEmpresa?.Departamento');
@@ -95,6 +123,7 @@
     function validaData() {
 
         const empresaNome = $('#EmpresaNome').val();
+        const empresaNumero =  $('#EmpresaNumero').val();
         const revendaNome = $('#RevendaNome').val();
         const bancoNumero = $('#BancoNumero').val();
         const departamentoNumero = $('#DepartamentoNumero').val();
@@ -105,6 +134,16 @@
                 icon: 'error',
                 title: 'Dados Invalidos!',
                 text: 'Por favor preecha o nome da empresa.',
+                /*footer: '<a href="">Why do I have this issue?</a>'*/
+            })
+            return false;
+        }
+
+        if (!empresaNumero) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Dados Invalidos!',
+                text: 'Por favor preecha o numero da empresa.',
                 /*footer: '<a href="">Why do I have this issue?</a>'*/
             })
             return false;
@@ -157,6 +196,7 @@
     function addData() {
 
         const empresaNome = $('#EmpresaNome').val();
+        const empresaNumero = $('#EmpresaNumero').val();
         const revendaNome = $('#RevendaNome').val();
         const bancoNumero = $('#BancoNumero').val();
         const departamentoNumero = $('#DepartamentoNumero').val();
@@ -167,7 +207,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Salvar", "Home")",
-                data: { empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
+                data: { empresaNome: empresaNome, empresaNumero: empresaNumero, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
                 success: function (result) {
                     Swal.close();
                     debugger
@@ -196,6 +236,7 @@
     function salveData() {
 
         const empresaNome = $('#EmpresaNome').val();
+        const empresaNumero = $('#EmpresaNumero').val();
         const revendaNome = $('#RevendaNome').val();
         const bancoNumero = $('#BancoNumero').val();
         const departamentoNumero = $('#DepartamentoNumero').val();
@@ -206,7 +247,7 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Salvar", "Home")",
-                data: { id: '@Model?.MainEmpresa?.Id', empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
+                data: { id: '@Model?.MainEmpresa?.Id', empresaNome: empresaNome, empresaNumero: empresaNumero, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
                 success: function (result) {
                     Swal.close();
                     if (result.success) {

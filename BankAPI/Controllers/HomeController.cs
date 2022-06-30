@@ -33,6 +33,7 @@ namespace BankAPI.Controllers
                     {
                         Id = item.Id,
                         Nome = item.Nome,
+                        Numero = item.Numero,
                         Revenda = item.Revenda,
                         Banco = item.Banco,
                         Origem = item.Origem,
@@ -50,6 +51,7 @@ namespace BankAPI.Controllers
                         {
                             Id = empresa.Id,
                             Nome = empresa.Nome,
+                            Numero = empresa.Numero,
                             Revenda = empresa.Revenda,
                             Banco = empresa.Banco,
                             Origem = empresa.Origem,
@@ -70,6 +72,7 @@ namespace BankAPI.Controllers
                         {
                             Id = empresa.Id,
                             Nome = empresa.Nome,
+                            Numero = empresa.Numero,
                             Revenda = empresa.Revenda,
                             Banco = empresa.Banco,
                             Origem = empresa.Origem,
@@ -97,31 +100,25 @@ namespace BankAPI.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Salvar(int id, string empresa, string revenda, string banco, string departamento, string origem)
+        public IActionResult Salvar(int id, string empresaNome, string empresaNumero, string revenda, string banco, string departamento, string origem)
         {
             try
             {
-                var resp = MySqlServices.UpdateEmpresa(new Empresa()
+                var empresa = new Empresa()
                 {
                     Id = id,
-                    Nome = empresa,
+                    Nome = empresaNome,
+                    Numero = empresaNumero,
                     Revenda = revenda,
                     Origem = origem,
                     Departamento = departamento,
                     Banco = banco
-                });
+                };
+
+                var resp = MySqlServices.UpdateEmpresa(empresa);
 
                 if (!resp.Success)
-                {
-                    resp = MySqlServices.AddEmpresa(new Empresa()
-                    {
-                        Nome = empresa,
-                        Revenda = revenda,
-                        Origem = origem,
-                        Departamento = departamento,
-                        Banco = banco
-                    });
-                }
+                    resp = MySqlServices.AddEmpresa(empresa);
 
                 var resultado = new
                 {
