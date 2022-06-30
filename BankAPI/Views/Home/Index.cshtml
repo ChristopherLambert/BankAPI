@@ -76,6 +76,10 @@
         $('#BancoNumero').val('@Model?.MainEmpresa?.Banco');
         $('#DepartamentoNumero').val('@Model?.MainEmpresa?.Departamento');
         $('#OrigemNumero').val('@Model?.MainEmpresa?.Origem');
+
+        $("#listEmpresas").change(function () {
+            redirect($("#listEmpresas").val());
+        });
     };
 
     function loading() {
