@@ -1,10 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-@model EmpresaViewModel
+﻿@{ ViewData["Title"] = "Home Page"; }
+@model HomeViewModel
 <div class="text-center">
     <h1 class="display-4">Bank API Servopa</h1>
     @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+</div>
+
+
+<div class="row">
+    <div class="col-2" style="float: right">
+        <label for="listEmpresas" style="font-size: 18px">EMPRESAS </label>
+    </div>
+    <div class="col-2" style="float: right">
+        @Html.DropDownListFor(x => Model.EmpresaId, new SelectList(Model.Empresas, "Id", "Nome"), htmlAttributes: new { @class = "form-control", id = "listEmpresas" })
+    </div>
 </div>
 
 <form>
@@ -37,19 +45,37 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>*@
-    <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">SALVAR</button>
-</form>
+<div class="row">
+     @if (Model.EmpresaId != 0)
+     {
+                <div class="col-8"> </div>
+                <div class="col-2" style="float: right">
+                    <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">ATUALIZAR</button>
+                </div>
+                 <div class="col-2" style="float: right ">
+                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
+                  </div>
+      }
+      else
+      {
+                <div class="col-10"> </div>
+                 <div class="col-2" style="float: right ">
+                      <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
+                 </div>
+      }
 
+ </div>
+</form>
 
 <script>
     @*var empresa = @Html.Raw(Json.Encode(Model.Nome));
     var revenda = @Html.Raw(Json.Encode(Model.Revenda));*@
     window.onload = function () {
-        $('#EmpresaNome').val('@Model?.Nome');
-        $('#RevendaNome').val('@Model?.Revenda');
-        $('#BancoNumero').val('@Model?.Banco');
-        $('#DepartamentoNumero').val('@Model?.Departamento');
-        $('#OrigemNumero').val('@Model?.Origem');
+        $('#EmpresaNome').val('@Model?.MainEmpresa?.Nome');
+        $('#RevendaNome').val('@Model?.MainEmpresa?.Revenda');
+        $('#BancoNumero').val('@Model?.MainEmpresa?.Banco');
+        $('#DepartamentoNumero').val('@Model?.MainEmpresa?.Departamento');
+        $('#OrigemNumero').val('@Model?.MainEmpresa?.Origem');
     };
 
 
@@ -125,6 +151,44 @@
 
     }
 
+    function addData() {
+
+        const empresaNome = $('#EmpresaNome').val();
+        const revendaNome = $('#RevendaNome').val();
+        const bancoNumero = $('#BancoNumero').val();
+        const departamentoNumero = $('#DepartamentoNumero').val();
+        const origemNumero = $('#OrigemNumero').val();
+
+        if (validaData()) {
+            loading();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Salvar", "Home")",
+                data: { empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
+                success: function (result) {
+                    Swal.close();
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Dados inseridos com sucesso!',
+                            /*text: 'Por favor preecha o nome da revenda.',*/
+                            /*footer: '<a href="">Why do I have this issue?</a>'*/
+                        })
+                        setTimeout(redirect(@Model.EmpresaId), 400);
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Dados Invalidos!',
+                            text: 'Infelizmente não conseguimos salvar os dados, por favor contacte o administrador do sistema!',
+                            /*footer: '<a href="">Why do I have this issue?</a>'*/
+                        })
+                    }
+                }
+            });
+        }
+    }
+
     function salveData() {
 
         const empresaNome = $('#EmpresaNome').val();
@@ -138,13 +202,13 @@
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("Salvar", "Home")",
-                data: { id: '@Model?.Id', empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
+                data: { id: '@Model?.MainEmpresa?.Id', empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
                 success: function (result) {
                     Swal.close();
                     if (result.success) {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Dados salvos com sucesso!',
+                            title: 'Dados atualizados com sucesso!',
                             /*text: 'Por favor preecha o nome da revenda.',*/
                             /*footer: '<a href="">Why do I have this issue?</a>'*/
                         })
@@ -159,5 +223,9 @@
                 }
             });
         }
+    }
+
+    function redirect(id) {
+        window.location.href = 'https://' + window.location.host + "?id=" +  id
     }
 </script>

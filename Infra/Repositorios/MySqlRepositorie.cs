@@ -9,6 +9,7 @@ namespace Infra.Repositorie
     public static class MySqlRepositorie
     {
         // EMPRESA
+        #region Empresa
         public static Empresa GetEmpresa(int id)
         {
             using (var context = new MySqlDbContext())
@@ -18,6 +19,17 @@ namespace Infra.Repositorie
 
                 var empresas = context.Empresa;
                 return empresas.FirstOrDefault(emp => emp.Id == id);
+            }
+        }
+
+        public static List<Empresa> GetAllEmpresa()
+        {
+            using (var context = new MySqlDbContext())
+            {
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
+                return context.Empresa.ToList();
             }
         }
 
@@ -60,8 +72,10 @@ namespace Infra.Repositorie
                 return false;
             }
         }
+        #endregion
 
         // RETORNO
+        #region Retorno
         public static Retorno GetRetorno(int id)
         {
             using (var context = new MySqlDbContext())
@@ -71,6 +85,18 @@ namespace Infra.Repositorie
 
                 var retornos = context.Retorno;
                 return retornos.FirstOrDefault(ret => ret.Id == id);
+            }
+        }
+
+        public static Retorno GetRetornoByTitulo(string titulo)
+        {
+            using (var context = new MySqlDbContext())
+            {
+                // Creates the database if not exists
+                context.Database.EnsureCreated();
+
+                var retornos = context.Retorno;
+                return retornos.FirstOrDefault(ret => ret.Titulo.Equals(titulo));
             }
         }
 
@@ -96,6 +122,27 @@ namespace Infra.Repositorie
             }
         }
 
+        public static bool UpdateRetorno(Retorno retorno)
+        {
+            try
+            {
+                using (var context = new MySqlDbContext())
+                {
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
+
+                    retorno.UpdateData = DateTime.Now;
+                    context.Retorno.Update(retorno);
+                    context.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public static bool AddRetorno(Retorno retorno)
         {
             try
@@ -117,5 +164,6 @@ namespace Infra.Repositorie
                 return false;
             }
         }
+        #endregion
     }
 }

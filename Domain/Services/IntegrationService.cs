@@ -96,27 +96,38 @@ namespace Domain.Services
                     if (resp.codigo == 0 || resp.codigo == 5) //REMESSA GERADA
                     {
                         entity.Status = "REMESSA GERADA";
-                        MySqlServices.AddRetorno(entity);
-                        OracleDB.UpdateTitulo(1, boleto.nuTitulo); //NOSSO NUMERO
+                        MySqlServices.AddOrUpdateRetorno(entity);
+                       
+                        if(boleto.nuTitulo != 0)
+                            OracleDB.UpdateTitulo(1, boleto.nuTitulo); //NOSSO NUMERO
                     }
                     else if (resp.codigo == 2)
                     {
                         entity.Status = "REMESSA COM FALHA";
                         entity.Ocorrencia = "Ambiente do Bradesco com Instabilidade";
-                        MySqlServices.AddRetorno(entity);
-                        OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
+                        MySqlServices.AddOrUpdateRetorno(entity);
+
+                        if (boleto.nuTitulo != 0)
+                            OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
                     }
                     else 
                     {
                         entity.Status = "REMESSA COM FALHA";
-                        entity.Ocorrencia = "Codigo: " + resp.codigo + " Mensagem: " + resp.mensagem + " Campos: " + resp.errosValidacao[0].ToString();
-                        MySqlServices.AddRetorno(entity);
-                        OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
+                        entity.Ocorrencia = "Codigo: " + resp.codigo + " Mensagem: " + resp.mensagem;
+
+                        entity.OcorrenciaCampos = "Campos: ";
+                        foreach (var item in resp.errosValidacao)
+                            entity.OcorrenciaCampos = entity.OcorrenciaCampos + " " + item.ToString();
+
+                        MySqlServices.AddOrUpdateRetorno(entity);
+
+                        if (boleto.nuTitulo != 0)
+                            OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
                     }
                 }
                 catch (Exception ex)
                 {
-                    MySqlServices.AddRetorno(new Entidades.Retorno()
+                    MySqlServices.AddOrUpdateRetorno(new Entidades.Retorno()
                     {
                         Titulo = boleto.nuTitulo.ToString(),
                         Valor = boleto.vlNominalTitulo.ToString(),
@@ -127,9 +138,10 @@ namespace Domain.Services
                         TransacaoID = Guid.NewGuid().ToString()
                     });
 
-                    OracleDB.UpdateTitulo(4, boleto.nuTitulo);
+                    if (boleto.nuTitulo != 0)
+                        OracleDB.UpdateTitulo(4, boleto.nuTitulo);
+
                     Console.WriteLine("ERROR POST BRADESCO:" + ex.Message);
-                    throw;
                 }
             }
         }

@@ -90,7 +90,7 @@ namespace Infra.DataBase
                                 "FAT.MUNICIPIO_ENTREGA AS FAT_MUNICIPIO_ENTREGA, FAT.UF_ENTREGA AS FAT_UF_ENTREGA, PJ.CGC AS PJ_CGC, PF.CPF AS PF_CPF " +
                                     "FROM FIN_TITULO FI " +
                                     "INNER JOIN FAT_CLIENTE FAT ON FAT.CLIENTE = FI.CLIENTE " +
-                                    "INNER JOIN GER_REVENDA REV ON REV.REVENDA = FI.REVENDA " +
+                                    "INNER JOIN GER_REVENDA REV ON REV.REVENDA = FI.REVENDA AND REV.EMPRESA = FI.EMPRESA " +
                                     "LEFT JOIN FAT_PESSOA_FISICA PF ON PF.CLIENTE = FI.CLIENTE " +
                                     "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
                                     // "WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
@@ -126,7 +126,7 @@ namespace Infra.DataBase
                                 titulo.ctrlCPFCNPJ = 1; // Convert.ToInt64(dataReader["REV_CNPJ"].ToString().Substring(13)); // 2 ultimos digitos
                                 titulo.idProduto = 9; //Convert.ToInt64(dataReader["FI_CARTEIRA"] != DBNull.Value ? dataReader["FI_CARTEIRA"] : 0);
                                 titulo.nuNegociacao = 399500000000075557; // Convert.ToInt64(dataReader["FI_AGENCIA_FAVORECIDO"] != DBNull.Value ? dataReader["FI_AGENCIA_FAVORECIDO"] : 0);
-                                titulo.nuTitulo = 123; //Convert.ToInt64(dataReader["FI_NOSSONUMERO"] != DBNull.Value ? dataReader["FI_NOSSONUMERO"] : 0);
+                                titulo.nuTitulo = Convert.ToInt64(dataReader["FI_NOSSONUMERO"] != DBNull.Value ? dataReader["FI_NOSSONUMERO"] : 0);
                                 titulo.nuCliente = dataReader["FI_CLIENTE"].ToString();
                                 titulo.dtEmissaoTitulo = Convert.ToDateTime(dataReader["FI_DTA_EMISSAO"]).ToString("dd.MM.yyyy");
                                 titulo.dtVencimentoTitulo = Convert.ToDateTime(dataReader["FI_DTA_VENCIMENTO"]).ToString("dd.MM.yyyy");

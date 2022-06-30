@@ -4,6 +4,8 @@ using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace BankAPI.Controllers
@@ -17,22 +19,68 @@ namespace BankAPI.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
             try
             {
-                var empresa = MySqlServices.GetEmpresa(1);
-                return View(new EmpresaViewModel()
+                List<Empresa> empresas = MySqlServices.GetAllEmpresa();
+
+                var homeModel = new HomeViewModel();
+                homeModel.EmpresaId = 0;
+                homeModel.Empresas = empresas.Select((item) =>
                 {
-                    Id = empresa.Id,
-                    Nome = empresa.Nome,
-                    Revenda = empresa.Revenda,
-                    Banco = empresa.Banco,
-                    Origem = empresa.Origem,
-                    Departamento = empresa.Departamento
-                });
+                    return new EmpresaViewModel()
+                    {
+                        Id = item.Id,
+                        Nome = item.Nome,
+                        Revenda = item.Revenda,
+                        Banco = item.Banco,
+                        Origem = item.Origem,
+                        Departamento = item.Departamento
+                    };
+                }).ToList();
+
+                if (id != 0)
+                {
+                    var empresa = empresas.FirstOrDefault(emp => emp.Id == id);
+                    if (empresa != null)
+                    {
+                        homeModel.EmpresaId = id;
+                        homeModel.MainEmpresa = new EmpresaViewModel()
+                        {
+                            Id = empresa.Id,
+                            Nome = empresa.Nome,
+                            Revenda = empresa.Revenda,
+                            Banco = empresa.Banco,
+                            Origem = empresa.Origem,
+                            Departamento = empresa.Departamento
+                        };
+                    }
+                    return View(homeModel);
+
+                }
+                else
+                {
+                    var empresa = empresas.FirstOrDefault();
+         
+                    if (empresa != null)
+                    {
+                        homeModel.EmpresaId = empresa.Id;
+                        homeModel.MainEmpresa = new EmpresaViewModel()
+                        {
+                            Id = empresa.Id,
+                            Nome = empresa.Nome,
+                            Revenda = empresa.Revenda,
+                            Banco = empresa.Banco,
+                            Origem = empresa.Origem,
+                            Departamento = empresa.Departamento
+                        };
+                    }
+                    return View(homeModel);
+                }
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View();
             }
@@ -80,7 +128,7 @@ namespace BankAPI.Controllers
             catch (Exception)
             {
 
-                return new JsonResult(new { success =  false });
+                return new JsonResult(new { success = false });
             }
         }
     }

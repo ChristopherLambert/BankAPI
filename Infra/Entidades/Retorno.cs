@@ -10,6 +10,7 @@ namespace Infra.Entidades
         public string Empresa { get; set; }
         public string Cliente { get; set; }
         public string Ocorrencia { get; set; }
+        public string OcorrenciaCampos { get; set; }
         public string Valor { get; set; }
         public string Status { get; set; }
         public DateTime InsertData { get; set; }

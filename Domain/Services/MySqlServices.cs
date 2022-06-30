@@ -9,6 +9,7 @@ namespace Domain.Services
     public static class MySqlServices
     {
         // EMPRESA 
+        #region EMPRESA
         public static Empresa GetEmpresa(int id)
         {
             var empresa = MySqlRepositorie.GetEmpresa(id);
@@ -24,6 +25,20 @@ namespace Domain.Services
                 Departamento = empresa.Departamento,
                 Banco = empresa.Banco
             };
+        }
+
+        public static List<Empresa> GetAllEmpresa()
+        {
+            return MySqlRepositorie.GetAllEmpresa().Select(rep =>
+            new Empresa()
+            {
+                Id = rep.Id,
+                Nome = rep.Nome,
+                Revenda = rep.Revenda,
+                Origem = rep.Origem,
+                Departamento = rep.Departamento,
+                Banco = rep.Banco
+            }).ToList();
         }
 
         public static bool AddEmpresa(Empresa empresa)
@@ -51,8 +66,10 @@ namespace Domain.Services
                 Banco = empresa.Banco
             });
         }
+        #endregion
 
         // RETORNO
+        #region RETORNO
         public static Retorno GetRetorno(int id)
         {
             var retorno = MySqlRepositorie.GetRetorno(id);
@@ -113,5 +130,33 @@ namespace Domain.Services
                 Status = rep.Status
             });
         }
+
+        public static bool AddOrUpdateRetorno(Retorno rep)
+        {
+            var retorno = MySqlRepositorie.GetRetornoByTitulo(rep.Titulo.ToString());
+            if(retorno == null)
+            {
+                return MySqlRepositorie.AddRetorno(new Infra.Entidades.Retorno()
+                {
+                    Id = rep.Id,
+                    TransacaoID = rep.TransacaoID,
+                    Empresa = rep.Empresa,
+                    Cliente = rep.Cliente,
+                    Ocorrencia = rep.Ocorrencia,
+                    Valor = rep.Valor,
+                    Titulo = rep.Titulo,
+                    Status = rep.Status
+                });
+            }
+            else
+            {
+                retorno.Status = rep.Status;
+                retorno.Ocorrencia = rep.Ocorrencia;
+                retorno.OcorrenciaCampos = rep.OcorrenciaCampos;
+                return MySqlRepositorie.UpdateRetorno(retorno);
+            }
+        }
+        #endregion
+
     }
 }

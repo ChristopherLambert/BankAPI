@@ -1,5 +1,14 @@
+using System.Collections.Generic;
+
 namespace BankAPI.Models
 {
+    public class HomeViewModel
+    {
+        public int EmpresaId { get; set; }
+        public EmpresaViewModel MainEmpresa { get; set; }
+        public List<EmpresaViewModel> Empresas { get; set; }
+    }
+
     public class EmpresaViewModel
     {
         public int Id { get; set; }

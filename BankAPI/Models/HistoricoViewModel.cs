@@ -10,6 +10,7 @@ namespace BankAPI.Models
         public string Empresa { get; set; }
         public string Cliente { get; set; }
         public string Ocorrencia { get; set; }
+        public string OcorrenciaCampos { get; set; }
         public string Valor { get; set; }
         public string Status { get; set; }
         public string InsertData { get; set; }
