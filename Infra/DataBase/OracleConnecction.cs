@@ -81,23 +81,21 @@ namespace Infra.DataBase
                         else
                         {   
                             // Todos os campos vindo de FAT_ENTREGA referente a Endereço
-                            cmd.CommandText = "SELECT " +
-                                "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
-                                "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
-                                "FI.CLIENTE AS FI_CLIENTE, FI.DTA_EMISSAO AS FI_DTA_EMISSAO, FI.DTA_VENCIMENTO AS FI_DTA_VENCIMENTO, " +
-                                "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_ENTREGA AS FAT_LOGRADOURO_ENTREGA, " +
-                                "FAT.NUMERO_ENTREGA AS FAT_NUMERO_ENTREGA, FAT.CEP_ENTREGA FAT_CEP_ENTREGA, FAT.BAIRRO_ENTREGA AS FAT_BAIRRO_ENTREGA, " +
-                                "FAT.MUNICIPIO_ENTREGA AS FAT_MUNICIPIO_ENTREGA, FAT.UF_ENTREGA AS FAT_UF_ENTREGA, PJ.CGC AS PJ_CGC, PF.CPF AS PF_CPF " +
-                                    "FROM FIN_TITULO FI " +
-                                    "INNER JOIN FAT_CLIENTE FAT ON FAT.CLIENTE = FI.CLIENTE " +
-                                    "INNER JOIN GER_REVENDA REV ON REV.REVENDA = FI.REVENDA AND REV.EMPRESA = FI.EMPRESA " +
-                                    "LEFT JOIN FAT_PESSOA_FISICA PF ON PF.CLIENTE = FI.CLIENTE " +
-                                    "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
-                                    // "WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
-                                    // "AND ´ROWNUM = 1";
+                            cmd.CommandText = "SELECT FI.VAL_TITULO AS FI_VAL_TITULO," +
+                              "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
+                              "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
+                              "FI.CLIENTE AS FI_CLIENTE, FI.DTA_EMISSAO AS FI_DTA_EMISSAO, FI.DTA_VENCIMENTO AS FI_DTA_VENCIMENTO, " +
+                              "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_ENTREGA AS FAT_LOGRADOURO_ENTREGA, " +
+                              "FAT.NUMERO_ENTREGA AS FAT_NUMERO_ENTREGA, FAT.CEP_ENTREGA FAT_CEP_ENTREGA, FAT.BAIRRO_ENTREGA AS FAT_BAIRRO_ENTREGA, " +
+                              "FAT.MUNICIPIO_ENTREGA AS FAT_MUNICIPIO_ENTREGA, FAT.UF_ENTREGA AS FAT_UF_ENTREGA, PJ.CGC AS PJ_CGC, PF.CPF AS PF_CPF " +
+                                  "FROM FIN_TITULO FI " +
+                                  "INNER JOIN FAT_CLIENTE FAT ON FAT.CLIENTE = FI.CLIENTE " +
+                                  "INNER JOIN GER_REVENDA REV ON REV.REVENDA = FI.REVENDA " +
+                                  "LEFT JOIN FAT_PESSOA_FISICA PF ON PF.CLIENTE = FI.CLIENTE " +
+                                  "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
 
                                     // FILTROS
-                                    "WHERE((FI.EMPRESA = '" + empresa.Nome + "'" + //CODIGO EMPRESA
+                                    "WHERE((FI.EMPRESA = '" + empresa.Numero + "'" + //CODIGO EMPRESA
                                     "AND coalesce(FI.REVENDA_COMPROMISSO, FI.REVENDA) = '" + empresa.Revenda + "'" + // CODIGO REVENDA
                                     "AND FI.BANCO = '" + empresa.Banco + "'" + ")) AND TIPO = 'CR' " +
                                     "AND ((STATUS = 'EM' " +
