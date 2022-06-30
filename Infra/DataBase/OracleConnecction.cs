@@ -69,11 +69,14 @@ namespace Infra.DataBase
                                   "LEFT JOIN FAT_PESSOA_JURIDICA PJ ON PJ.CLIENTE = FI.CLIENTE " +
 
                                   //FILTRO TESTE
-                                  "WHERE FI.EMPRESA = '1'AND FI.DEPARTAMENTO = '1'" +
-                                  "AND FI.STATUS = 'EM' AND FI.ORIGEM = 207" +
+                                  "WHERE  FI.empresa = '1' " +
+                                  "AND fi.revenda = 1 " +
+                                  "and fi.cliente = 909287 " +
+                                  "AND fi.titulo = 52521 " +
+                                  "AND fi.banco IS NOT NULL "; 
 
                                   //"WHERE FI.EMPRESA = 1 AND FI.REVENDA = 1 AND BANCO = 104 " +
-                                  "AND ROWNUM = 1";
+                                  //"AND ROWNUM = 1";
                         }
                         else
                         {   
@@ -115,20 +118,23 @@ namespace Infra.DataBase
                             {
                                 var titulo = new BradescoBoleto();
                                 titulo.registraTitulo = 1;
+                                titulo.vlNominalTitulo = Convert.ToInt64(dataReader["FI_VAL_TITULO"]);
 
-                                titulo.nuCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(0,9));            
+                                titulo.nuCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(0,9));
                                 // titulo.filialCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(9, 3)); // **
-                                titulo.filialCPFCNPJ = Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(7, 3));
-                                titulo.ctrlCPFCNPJ = Convert.ToInt64(dataReader["REV_CNPJ"].ToString().Substring(13)); // 2 ultimos digitos
-                                titulo.idProduto = Convert.ToInt64(dataReader["FI_CARTEIRA"] != DBNull.Value ? dataReader["FI_CARTEIRA"] : 0);
-                                titulo.nuNegociacao = Convert.ToInt64(dataReader["FI_AGENCIA_FAVORECIDO"] != DBNull.Value ? dataReader["FI_AGENCIA_FAVORECIDO"] : 0);
-                                titulo.nuTitulo = Convert.ToInt64(dataReader["FI_NOSSONUMERO"] != DBNull.Value ? dataReader["FI_NOSSONUMERO"] : 0);
+                                titulo.filialCPFCNPJ = 57; //Convert.ToInt64(dataReader["FAT_CGCCPF"].ToString().Substring(7, 3));
+                                titulo.ctrlCPFCNPJ = 1; // Convert.ToInt64(dataReader["REV_CNPJ"].ToString().Substring(13)); // 2 ultimos digitos
+                                titulo.idProduto = 9; //Convert.ToInt64(dataReader["FI_CARTEIRA"] != DBNull.Value ? dataReader["FI_CARTEIRA"] : 0);
+                                titulo.nuNegociacao = 399500000000075557; // Convert.ToInt64(dataReader["FI_AGENCIA_FAVORECIDO"] != DBNull.Value ? dataReader["FI_AGENCIA_FAVORECIDO"] : 0);
+                                titulo.nuTitulo = 123; //Convert.ToInt64(dataReader["FI_NOSSONUMERO"] != DBNull.Value ? dataReader["FI_NOSSONUMERO"] : 0);
                                 titulo.nuCliente = dataReader["FI_CLIENTE"].ToString();
                                 titulo.dtEmissaoTitulo = Convert.ToDateTime(dataReader["FI_DTA_EMISSAO"]).ToString("dd.MM.yyyy");
                                 titulo.dtVencimentoTitulo = Convert.ToDateTime(dataReader["FI_DTA_VENCIMENTO"]).ToString("dd.MM.yyyy");
                                 titulo.vlNominalTitulo = Convert.ToDecimal(dataReader["FI_VAL_TITULO"] != DBNull.Value ? dataReader["FI_VAL_TITULO"] : 0);
                                 titulo.cdEspecieTitulo = 32; // BOLETO --> (BDP -- Boleto de Proposta) Docu bradesco)
                                 titulo.nomePagador = dataReader["FAT_NOME"].ToString();
+                                titulo.agenciaDestino = 3995;
+                         
                                 titulo.logradouroPagador = dataReader["FAT_LOGRADOURO_ENTREGA"].ToString().Length > 0 ? dataReader["FAT_LOGRADOURO_ENTREGA"].ToString() : "0";
                                 titulo.nuLogradouroPagador = dataReader["FAT_NUMERO_ENTREGA"].ToString().Length > 0 ? dataReader["FAT_NUMERO_ENTREGA"].ToString() : "0";
 
@@ -140,6 +146,7 @@ namespace Infra.DataBase
                                 titulo.bairroPagador = dataReader["FAT_BAIRRO_ENTREGA"].ToString().Length > 0 ? dataReader["FAT_BAIRRO_ENTREGA"].ToString() : "0";
                                 titulo.municipioPagador = dataReader["FAT_MUNICIPIO_ENTREGA"].ToString().Length > 0 ? dataReader["FAT_MUNICIPIO_ENTREGA"].ToString() : "0";
                                 titulo.ufPagador = dataReader["FAT_UF_ENTREGA"].ToString().Length > 0 ? dataReader["FAT_UF_ENTREGA"].ToString() : "0";
+                                titulo.nuCPFCNPJ = 38052160;
                                 // titulo.nuCpfcnpjPagador = Convert.ToInt64(dataReader["PJ_CGC"] ?? dataReader["PF_CPF"]);
                                 titulo.nuCpfcnpjPagador = Convert.ToInt64(dataReader["PJ_CGC"] != DBNull.Value ? dataReader["PJ_CGC"] : dataReader["PF_CPF"]);
                                 titulo.cdIndCpfcnpjPagador = titulo.nuCpfcnpjPagador.ToString().Length == 14 ? 2 : 1;
@@ -153,7 +160,7 @@ namespace Infra.DataBase
                         dataReader.Close();
                         dataReader.Dispose();
 
-                        return listTitulos;
+                       return listTitulos;
                     }
                     catch(Exception ex)
                     {
