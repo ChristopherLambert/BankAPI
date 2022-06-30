@@ -82,6 +82,12 @@ namespace Domain.Services
                 Success = resp.Success
             };
         }
+
+        public static bool DeleteEmpresa(int id)
+        {
+            var resp = MySqlRepositorie.DeleteEmpresa(id);
+            return resp;
+        }
         #endregion
 
         // RETORNO

@@ -74,24 +74,27 @@
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>*@
 
-    <div class="row">
-        @if (Model.EmpresaId != 0)
-        {
-<div class="col-8"> </div>
-                <div class="col-2" style="float: right">
-                    <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">ATUALIZAR</button>
-                </div>
-                                <div class="col-2" style="float: right ">
-                                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
-                                </div> }
-                            else
-                            {
-                <div class="col-10"> </div>
-                                <div class="col-2" style="float: right ">
-                                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
-                                </div>}
+<div class="row">
+    @if (Model.EmpresaId != 0)
+    {
+<div class="col-2" style="float: right">
+    <button type="button" style="float: left" class="btn btn-danger" onclick="deleteData()">DELETE</button>
+</div>
+                <div class="col-6"> </div>
+                                <div class="col-2" style="float: right">
+                                    <button type="button" style="float:right" class="btn btn-primary" onclick="salveData()">ATUALIZAR</button>
+                                </div>
+                                                <div class="col-2" style="float: right ">
+                                                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
+                                                </div> }
+                                            else
+                                            {
+                                <div class="col-10"> </div>
+                                                <div class="col-2" style="float: right ">
+                                                    <button type="button" style="float:right" class="btn btn-primary" onclick="addData()">ADICIONAR</button>
+                                                </div>}
 
-    </div>
+</div>
 </form>
 
 <script>
@@ -218,7 +221,7 @@
                             /*text: 'Por favor preecha o nome da revenda.',*/
                             /*footer: '<a href="">Why do I have this issue?</a>'*/
                         })
-                        setTimeout(redirect(result.id), 400);
+                        setTimeout(redirect(result.id), 600);
 
                     } else {
                         Swal.fire({
@@ -270,8 +273,38 @@
         }
     }
 
+    function deleteData() {
+        $.ajax({
+                type: "POST",
+                url: "@Url.Action("Deletar", "Home")",
+                data: { id: $("#listEmpresas").val() },
+                success: function (result) {
+                    Swal.close();
+                    if (result.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Dados deletados com sucesso!',
+                            /*text: 'Por favor preecha o nome da revenda.',*/
+                            /*footer: '<a href="">Why do I have this issue?</a>'*/
+                        })
+                        setTimeout(redirect(result.id), 600);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error ao Deletarseus dados!',
+                            text: 'Infelizmente não conseguimos deletar os dados, por favor contacte o administrador do sistema!',
+                            /*footer: '<a href="">Why do I have this issue?</a>'*/
+                        })
+                    }
+                }
+            });
+    }
+
     function redirect(id) {
-        console.log(id);
-        window.location.href = 'https://' + window.location.host + "?id=" +  id
+        if (id == 0) {
+            window.location.href = 'https://' + window.location.host;
+        } else {
+            window.location.href = 'https://' + window.location.host + "?id=" + id;
+        }
     }
 </script>

@@ -64,7 +64,7 @@ namespace BankAPI.Controllers
                 else
                 {
                     var empresa = empresas.FirstOrDefault();
-         
+
                     if (empresa != null)
                     {
                         homeModel.EmpresaId = empresa.Id;
@@ -127,6 +127,19 @@ namespace BankAPI.Controllers
                 };
 
                 return new JsonResult(resultado);
+            }
+            catch (Exception)
+            {
+                return new JsonResult(new { Success = false });
+            }
+        }
+
+        public IActionResult Deletar(int id)
+        {
+            try
+            {
+                MySqlServices.DeleteEmpresa(id);
+                return new JsonResult(new { Success = true });
             }
             catch (Exception)
             {

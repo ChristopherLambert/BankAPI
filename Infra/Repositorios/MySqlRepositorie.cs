@@ -86,6 +86,27 @@ namespace Infra.Repositorie
                 };
             }
         }
+
+        public static bool DeleteEmpresa(int id)
+        {
+            using (var context = new MySqlDbContext())
+            {
+                try
+                {
+                    // Creates the database if not exists
+                    context.Database.EnsureCreated();
+
+                    var empresa = GetEmpresa(id);
+                    context.Empresa.Remove(empresa);
+                    context.SaveChanges();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
         #endregion
 
         // RETORNO
