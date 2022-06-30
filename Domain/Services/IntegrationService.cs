@@ -39,8 +39,7 @@ namespace Domain.Services
                 }
             }
 
-            new Task(async () =>
-            {
+            new Task(async () => {
                 SericeOracle();
             }).Start();
         }
