@@ -167,6 +167,7 @@
                 data: { empresa: empresaNome, revenda: revendaNome, banco: bancoNumero, departamento: departamentoNumero, origem: origemNumero },
                 success: function (result) {
                     Swal.close();
+                    debugger
                     if (result.success) {
                         Swal.fire({
                             icon: 'success',
@@ -174,7 +175,7 @@
                             /*text: 'Por favor preecha o nome da revenda.',*/
                             /*footer: '<a href="">Why do I have this issue?</a>'*/
                         })
-                        setTimeout(redirect(@Model.EmpresaId), 400);
+                        setTimeout(redirect(result.id), 400);
 
                     } else {
                         Swal.fire({
@@ -226,6 +227,7 @@
     }
 
     function redirect(id) {
+        console.log(id);
         window.location.href = 'https://' + window.location.host + "?id=" +  id
     }
 </script>

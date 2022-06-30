@@ -3,6 +3,7 @@ using Infra.Repositorie;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using Domain.Models;
 
 namespace Domain.Services
 {
@@ -41,22 +42,9 @@ namespace Domain.Services
             }).ToList();
         }
 
-        public static bool AddEmpresa(Empresa empresa)
+        public static RespDB AddEmpresa(Empresa empresa)
         {
-           return MySqlRepositorie.AddEmpresa(new Infra.Entidades.Empresa() 
-           {
-               Id = empresa.Id,
-               Nome = empresa.Nome,
-               Revenda = empresa.Revenda,
-               Origem = empresa.Origem,
-               Departamento = empresa.Departamento,
-               Banco = empresa.Banco
-           });
-        }
-
-        public static bool UpdateEmpresa(Empresa empresa)
-        {
-            return MySqlRepositorie.UpdateEmpresa(new Infra.Entidades.Empresa()
+            var resp = MySqlRepositorie.AddEmpresa(new Infra.Entidades.Empresa()
             {
                 Id = empresa.Id,
                 Nome = empresa.Nome,
@@ -65,6 +53,31 @@ namespace Domain.Services
                 Departamento = empresa.Departamento,
                 Banco = empresa.Banco
             });
+
+            return new RespDB()
+            {
+                Id = resp.Id,
+                Success = resp.Success
+            };
+        }
+
+        public static RespDB UpdateEmpresa(Empresa empresa)
+        {
+            var resp = MySqlRepositorie.UpdateEmpresa(new Infra.Entidades.Empresa()
+            {
+                Id = empresa.Id,
+                Nome = empresa.Nome,
+                Revenda = empresa.Revenda,
+                Origem = empresa.Origem,
+                Departamento = empresa.Departamento,
+                Banco = empresa.Banco
+            });
+
+            return new RespDB()
+            {
+                Id = resp.Id,
+                Success = resp.Success
+            };
         }
         #endregion
 

@@ -33,7 +33,7 @@ namespace Infra.Repositorie
             }
         }
 
-        public static bool AddEmpresa(Empresa empresa)
+        public static RespDB AddEmpresa(Empresa empresa)
         {
             try
             {
@@ -44,16 +44,23 @@ namespace Infra.Repositorie
 
                     context.Empresa.Add(empresa);
                     context.SaveChanges();
-                    return true;
+                    return new RespDB()
+                    {
+                        Success = true,
+                        Id = empresa.Id
+                    };
                 }
             }
             catch(Exception ex)
             {
-                return false;
+                return new RespDB()
+                {
+                    Success = false
+                };
             }
         }
 
-        public static bool UpdateEmpresa(Empresa empresa)
+        public static RespDB UpdateEmpresa(Empresa empresa)
         {
             try
             {
@@ -64,12 +71,19 @@ namespace Infra.Repositorie
 
                     context.Empresa.Update(empresa);
                     context.SaveChanges();
-                    return true;
+                    return new RespDB()
+                    {
+                        Success = true,
+                        Id = empresa.Id
+                    };
                 }
             }
             catch (Exception ex)
             {
-                return false;
+                return new RespDB()
+                {
+                    Success = false
+                };
             }
         }
         #endregion

@@ -111,7 +111,7 @@ namespace BankAPI.Controllers
                     Banco = banco
                 });
 
-                if (!resp)
+                if (!resp.Success)
                 {
                     resp = MySqlServices.AddEmpresa(new Empresa()
                     {
@@ -123,12 +123,17 @@ namespace BankAPI.Controllers
                     });
                 }
 
-                return new JsonResult(new { success = resp });
+                var resultado = new
+                {
+                    Id = resp.Id,
+                    Success = resp.Success
+                };
+
+                return new JsonResult(resultado);
             }
             catch (Exception)
             {
-
-                return new JsonResult(new { success = false });
+                return new JsonResult(new { Success = false });
             }
         }
     }
