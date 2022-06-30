@@ -85,7 +85,7 @@ namespace BankAPI.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                return View(new HomeViewModel());
             }
         }
 

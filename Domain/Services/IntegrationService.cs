@@ -4,8 +4,6 @@ using Domain.Models;
 using Newtonsoft.Json;
 using Infra.DataBase;
 using Domain.Helper;
-using Domain.Entidades;
-using System.Collections.Generic;
 
 namespace Domain.Services
 {
