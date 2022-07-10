@@ -11,6 +11,8 @@ namespace Infra.DataBase
 
         public DbSet<Config> Config { get; set; }
 
+        public DbSet<Usuario> Usuario { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -36,11 +38,20 @@ namespace Infra.DataBase
                 entity.Property(e => e.TempodeCiclo).IsRequired();
             });
 
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Login).IsRequired();
+                entity.Property(e => e.Senha).IsRequired();
+                entity.Property(e => e.Tipo).IsRequired();
+            });
+
             modelBuilder.Entity<Empresa>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Nome).IsRequired();
                 entity.Property(e => e.Revenda).IsRequired();
+                entity.Property(e => e.RevendaNumero).IsRequired();
                 entity.Property(e => e.Banco).IsRequired();
                 entity.Property(e => e.Departamento).IsRequired();
                 entity.Property(e => e.Origem).IsRequired();
@@ -51,6 +62,9 @@ namespace Infra.DataBase
                 entity.HasKey(e => e.Id);
                 entity.Property(d => d.TransacaoID);
                 entity.Property(e => e.Empresa).IsRequired();
+                entity.Property(e => e.Revenda).IsRequired();
+                entity.Property(e => e.RevendaCodigo).IsRequired();
+                entity.Property(e => e.Parcela);
                 entity.Property(d => d.Cliente);
                 entity.Property(d => d.Ocorrencia);
                 entity.Property(d => d.Valor);

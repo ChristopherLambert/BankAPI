@@ -23,7 +23,7 @@ namespace BankAPI.Controllers
         {
             try
             {
-                List<Empresa> empresas = MySqlServices.GetAllEmpresa();
+                List<Empresa> empresas = MySqlServicesEmpresa.GetAllEmpresa();
 
                 var homeModel = new HomeViewModel();
                 homeModel.EmpresaId = 0;
@@ -35,6 +35,7 @@ namespace BankAPI.Controllers
                         Nome = item.Nome,
                         Numero = item.Numero,
                         Revenda = item.Revenda,
+                        RevendaNumero = item.RevendaNumero,
                         Banco = item.Banco,
                         Origem = item.Origem,
                         Departamento = item.Departamento
@@ -53,6 +54,7 @@ namespace BankAPI.Controllers
                             Nome = empresa.Nome,
                             Numero = empresa.Numero,
                             Revenda = empresa.Revenda,
+                            RevendaNumero = empresa.RevendaNumero,
                             Banco = empresa.Banco,
                             Origem = empresa.Origem,
                             Departamento = empresa.Departamento
@@ -74,6 +76,7 @@ namespace BankAPI.Controllers
                             Nome = empresa.Nome,
                             Numero = empresa.Numero,
                             Revenda = empresa.Revenda,
+                            RevendaNumero = empresa.RevendaNumero,
                             Banco = empresa.Banco,
                             Origem = empresa.Origem,
                             Departamento = empresa.Departamento
@@ -100,7 +103,7 @@ namespace BankAPI.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Salvar(int id, string empresaNome, string empresaNumero, string revenda, string banco, string departamento, string origem)
+        public IActionResult Salvar(int id, string empresaNome, string empresaNumero, string revenda, string revendaNumero, string banco, string departamento, string origem)
         {
             try
             {
@@ -110,15 +113,16 @@ namespace BankAPI.Controllers
                     Nome = empresaNome,
                     Numero = empresaNumero,
                     Revenda = revenda,
+                    RevendaNumero = revendaNumero,
                     Origem = origem,
                     Departamento = departamento,
                     Banco = banco
                 };
 
-                var resp = MySqlServices.UpdateEmpresa(empresa);
+                var resp = MySqlServicesEmpresa.UpdateEmpresa(empresa);
 
                 if (!resp.Success)
-                    resp = MySqlServices.AddEmpresa(empresa);
+                    resp = MySqlServicesEmpresa.AddEmpresa(empresa);
 
                 var resultado = new
                 {
@@ -138,7 +142,7 @@ namespace BankAPI.Controllers
         {
             try
             {
-                MySqlServices.DeleteEmpresa(id);
+                MySqlServicesEmpresa.DeleteEmpresa(id);
                 return new JsonResult(new { Success = true });
             }
             catch (Exception)

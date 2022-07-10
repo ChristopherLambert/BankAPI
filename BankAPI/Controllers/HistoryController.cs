@@ -27,7 +27,7 @@ namespace BankAPI.Controllers
                 if (string.IsNullOrEmpty(date))
                 {
                     //retornos = MySqlServices.GetAllRetorno();
-                    retornos = MySqlServices.GetDateRetorno(DateTime.Now);
+                    retornos = MySqlServicesRetorno.GetDateRetorno(DateTime.Now);
                 }
                 else
                 {
@@ -37,7 +37,7 @@ namespace BankAPI.Controllers
                     CultureInfo provider = new CultureInfo("pt-BR");
                     DateTime dateTime = DateTime.ParseExact(date, validformats, provider);
 
-                    retornos = MySqlServices.GetDateRetorno(dateTime);
+                    retornos = MySqlServicesRetorno.GetDateRetorno(dateTime);
                 }
 
                 return View(retornos.Select(

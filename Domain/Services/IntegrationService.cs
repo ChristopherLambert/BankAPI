@@ -106,7 +106,7 @@ namespace Domain.Services
                 if (resp.codigo == 0 || resp.codigo == 5) //REMESSA GERADA
                 {
                     entity.Status = "REMESSA GERADA";
-                    MySqlServices.AddOrUpdateRetorno(entity);
+                    MySqlServicesRetorno.AddOrUpdateRetorno(entity);
 
                     if (boleto.nuTitulo != 0)
                         OracleDB.UpdateTitulo(1, boleto.nuTitulo); //NOSSO NUMERO
@@ -115,7 +115,7 @@ namespace Domain.Services
                 {
                     entity.Status = "REMESSA COM FALHA";
                     entity.Ocorrencia = "Ambiente do Bradesco com Instabilidade";
-                    MySqlServices.AddOrUpdateRetorno(entity);
+                    MySqlServicesRetorno.AddOrUpdateRetorno(entity);
 
                     if (boleto.nuTitulo != 0)
                         OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
@@ -129,7 +129,7 @@ namespace Domain.Services
                     foreach (var item in resp.errosValidacao)
                         entity.OcorrenciaCampos = entity.OcorrenciaCampos + " " + item.ToString();
 
-                    MySqlServices.AddOrUpdateRetorno(entity);
+                    MySqlServicesRetorno.AddOrUpdateRetorno(entity);
 
                     if (boleto.nuTitulo != 0)
                         OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
@@ -137,7 +137,7 @@ namespace Domain.Services
             }
             catch (Exception ex)
             {
-                MySqlServices.AddOrUpdateRetorno(new Entidades.Retorno()
+                MySqlServicesRetorno.AddOrUpdateRetorno(new Entidades.Retorno()
                 {
                     Titulo = boleto.nuTitulo.ToString(),
                     Valor = boleto.vlNominalTitulo.ToString(),

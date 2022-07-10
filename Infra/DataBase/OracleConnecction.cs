@@ -103,7 +103,7 @@ namespace Infra.DataBase
                                     "AND (ENVIADO = 1 OR ENVIADO = 3) AND INSTRUCAO_ENVIO = 2) )) " +
                                     "AND dta_emissao between TO_DATE('" + DateTime.Now.ToString("dd/MM/yyyy") + "','dd/mm/yyyy') " +
                                     "AND TO_DATE('" + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + "','dd/mm/yyyy')" +
-                                    "AND ((EMPRESA = '" + empresa.Nome + "'" + " and REVENDA = '" + empresa.Revenda + "'" + " and DEPARTAMENTO = '" + empresa.Departamento + "'" + ")) " +
+                                    "AND ((EMPRESA = '" + empresa.Nome + "'" + " and REVENDA = '" + empresa.RevendaNumero + "'" + " and DEPARTAMENTO = '" + empresa.Departamento + "'" + ")) " +
                                     "AND FI.ORIGEM IN('" + empresa.Origem + "'" + ") " +
                                     "AND not exists(select NFE_SITUACAO from FAT_MOVIMENTO_CAPA where EMPRESA = FI.EMPRESA and REVENDA = FI.REVENDA and OPERACAO = FI.OPERACAO and STATUS <> 'C' and TIPO_NF = 'E' and NFE_SITUACAO <> 'A') ";
                         }
