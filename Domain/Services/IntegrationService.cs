@@ -4,6 +4,7 @@ using Domain.Models;
 using Newtonsoft.Json;
 using Infra.DataBase;
 using Domain.Helper;
+using Infra.Models;
 
 namespace Domain.Services
 {
@@ -66,8 +67,8 @@ namespace Domain.Services
             OracleDB oracleDB = new OracleDB();
 
             var listTitulos = OracleDB.GetFINTitulo(null);
-            foreach (var boleto in listTitulos)
-                IntegrationService.SendTitulo(boleto.ToModel());
+            foreach (var respSystem in listTitulos)
+                IntegrationService.SendTitulo(respSystem);
 
             //var empresas = MySqlServices.GetAllEmpresa();
             //foreach (var empresa in empresas)
@@ -83,73 +84,57 @@ namespace Domain.Services
             //            Departamento = empresa.Departamento
             //        });
 
-            //    foreach (var boleto in listTitulos)
-            //        IntegrationService.SendTitulo(boleto.ToModel());
+            //    foreach (var respSystem in listTitulos)
+            //        IntegrationService.SendTitulo(respSystem);
             //}
         }
 
-        private static void SendTitulo(BradescoBoleto boleto)
+        private static void SendTitulo(RespSystem respSystem)
         {
             try
             {
-                var resp = JsonConvert.DeserializeObject<RespBradesco>(RestApiV2.PostBradesco(IntegrationService.tokenBradesco, boleto));
-
-                var entity = new Entidades.Retorno()
-                {
-                    Titulo = boleto.nuTitulo.ToString(),
-                    Valor = boleto.vlNominalTitulo.ToString(),
-                    Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
-                    Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                    TransacaoID = Guid.NewGuid().ToString()
-                };
+                var resp = JsonConvert.DeserializeObject<RespBradesco>(RestApiV2.PostBradesco(IntegrationService.tokenBradesco, respSystem.Boleto.ToModel()));
 
                 if (resp.codigo == 0 || resp.codigo == 5) //REMESSA GERADA
                 {
-                    entity.Status = "REMESSA GERADA";
-                    MySqlServicesRetorno.AddOrUpdateRetorno(entity);
+                    respSystem.Retorno.Status = "REMESSA GERADA";
+                    MySqlServicesRetorno.AddOrUpdateRetorno(respSystem.Retorno);
 
-                    if (boleto.nuTitulo != 0)
-                        OracleDB.UpdateTitulo(1, boleto.nuTitulo); //NOSSO NUMERO
+                    if (respSystem.Boleto.nuTitulo != 0)
+                        OracleDB.UpdateTitulo(1, respSystem.Boleto.nuTitulo); //NOSSO NUMERO
                 }
                 else if (resp.codigo == 2)
                 {
-                    entity.Status = "REMESSA COM FALHA";
-                    entity.Ocorrencia = "Ambiente do Bradesco com Instabilidade";
-                    MySqlServicesRetorno.AddOrUpdateRetorno(entity);
+                    respSystem.Retorno.Status = "REMESSA COM FALHA";
+                    respSystem.Retorno.Ocorrencia = "Ambiente do Bradesco com Instabilidade";
+                    MySqlServicesRetorno.AddOrUpdateRetorno(respSystem.Retorno);
 
-                    if (boleto.nuTitulo != 0)
-                        OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
+                    if (respSystem.Boleto.nuTitulo != 0)
+                        OracleDB.UpdateTitulo(4, respSystem.Boleto.nuTitulo); // Remessa Rejeitada
                 }
                 else
                 {
-                    entity.Status = "REMESSA COM FALHA";
-                    entity.Ocorrencia = "Codigo: " + resp.codigo + " Mensagem: " + resp.mensagem;
+                    respSystem.Retorno.Status = "REMESSA COM FALHA";
+                    respSystem.Retorno.Ocorrencia = "Codigo: " + resp.codigo + " Mensagem: " + resp.mensagem;
 
-                    entity.OcorrenciaCampos = "Campos: ";
+                    respSystem.Retorno.OcorrenciaCampos = "Campos: ";
                     foreach (var item in resp.errosValidacao)
-                        entity.OcorrenciaCampos = entity.OcorrenciaCampos + " " + item.ToString();
+                        respSystem.Retorno.OcorrenciaCampos = respSystem.Retorno.OcorrenciaCampos + " " + item.ToString();
 
-                    MySqlServicesRetorno.AddOrUpdateRetorno(entity);
+                    MySqlServicesRetorno.AddOrUpdateRetorno(respSystem.Retorno);
 
-                    if (boleto.nuTitulo != 0)
-                        OracleDB.UpdateTitulo(4, boleto.nuTitulo); // Remessa Rejeitada
+                    if (respSystem.Boleto.nuTitulo != 0)
+                        OracleDB.UpdateTitulo(4, respSystem.Boleto.nuTitulo); // Remessa Rejeitada
                 }
             }
             catch (Exception ex)
             {
-                MySqlServicesRetorno.AddOrUpdateRetorno(new Entidades.Retorno()
-                {
-                    Titulo = boleto.nuTitulo.ToString(),
-                    Valor = boleto.vlNominalTitulo.ToString(),
-                    Empresa = boleto.nuCPFCNPJ.ToString(), // CNPJ EMPRESA
-                    Cliente = boleto.nuCliente.ToString(), // CNPJ CLIENTE
-                    Ocorrencia = "Excpetion: " + ex.Message,
-                    Status = "REMESSA COM EXCPETION",
-                    TransacaoID = Guid.NewGuid().ToString()
-                });
+                respSystem.Retorno.OcorrenciaCampos = "Excpetion: " + ex.Message;
+                respSystem.Retorno.Status = "REMESSA COM EXCPETION";
+                MySqlServicesRetorno.AddOrUpdateRetorno(respSystem.Retorno);
 
-                if (boleto.nuTitulo != 0)
-                    OracleDB.UpdateTitulo(4, boleto.nuTitulo);
+                if (respSystem.Boleto.nuTitulo != 0)
+                    OracleDB.UpdateTitulo(4, respSystem.Boleto.nuTitulo);
 
                 Console.WriteLine("ERROR POST BRADESCO:" + ex.Message);
             }

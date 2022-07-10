@@ -1,5 +1,6 @@
 ﻿
 using Infra.Entidades;
+using Infra.Models;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -41,9 +42,9 @@ namespace Infra.DataBase
             #endregion
         }
 
-        public static List<BradescoBoleto> GetFINTitulo(Empresa empresa)
+        public static List<RespSystem> GetFINTitulo(Empresa empresa)
         {
-            var listTitulos = new List<BradescoBoleto>();
+            var listTitulos = new List<RespSystem>();
             using (OracleConnection con = OracleDB.con)
             {
                 using (OracleCommand cmd = con.CreateCommand())
@@ -55,11 +56,11 @@ namespace Infra.DataBase
 
                         if(empresa == null)
                         {
-                            cmd.CommandText = "SELECT FI.VAL_TITULO AS FI_VAL_TITULO," +
-                              "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
-                              "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
+                            cmd.CommandText = "SELECT FI.VAL_TITULO AS FI_VAL_TITULO, FI.EMPRESA AS FI_EMPRESA, " +
+                              "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, FI.REVENDA AS FI_REVENDA, " +
+                              "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, FI.DUPLICATA AS FI_DUPLICATA, " +
                               "FI.CLIENTE AS FI_CLIENTE, FI.DTA_EMISSAO AS FI_DTA_EMISSAO, FI.DTA_VENCIMENTO AS FI_DTA_VENCIMENTO, " +
-                              "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_ENTREGA AS FAT_LOGRADOURO_ENTREGA, " +
+                              "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_ENTREGA AS FAT_LOGRADOURO_ENTREGA, FAT.NOME AS FAT_NOME, " +
                               "FAT.NUMERO_ENTREGA AS FAT_NUMERO_ENTREGA, FAT.CEP_ENTREGA FAT_CEP_ENTREGA, FAT.BAIRRO_ENTREGA AS FAT_BAIRRO_ENTREGA, " +
                               "FAT.MUNICIPIO_ENTREGA AS FAT_MUNICIPIO_ENTREGA, FAT.UF_ENTREGA AS FAT_UF_ENTREGA, PJ.CGC AS PJ_CGC, PF.CPF AS PF_CPF " +
                                   "FROM FIN_TITULO FI " +
@@ -85,7 +86,7 @@ namespace Infra.DataBase
                               "FAT.CGCCPF AS FAT_CGCCPF, REV.CNPJ AS REV_CNPJ, FI.CARTEIRA AS FI_CARTEIRA, " +
                               "FI.AGENCIA_FAVORECIDO AS FI_AGENCIA_FAVORECIDO, FI.NOSSONUMERO AS FI_NOSSONUMERO, " +
                               "FI.CLIENTE AS FI_CLIENTE, FI.DTA_EMISSAO AS FI_DTA_EMISSAO, FI.DTA_VENCIMENTO AS FI_DTA_VENCIMENTO, " +
-                              "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_ENTREGA AS FAT_LOGRADOURO_ENTREGA, " +
+                              "FI.VAL_TITULO AS FI_VAL_TITULO, FAT.NOME AS FAT_NOME, FAT.LOGRADOURO_ENTREGA AS FAT_LOGRADOURO_ENTREGA, FAT.NOME AS FAT_NOME, " +
                               "FAT.NUMERO_ENTREGA AS FAT_NUMERO_ENTREGA, FAT.CEP_ENTREGA FAT_CEP_ENTREGA, FAT.BAIRRO_ENTREGA AS FAT_BAIRRO_ENTREGA, " +
                               "FAT.MUNICIPIO_ENTREGA AS FAT_MUNICIPIO_ENTREGA, FAT.UF_ENTREGA AS FAT_UF_ENTREGA, PJ.CGC AS PJ_CGC, PF.CPF AS PF_CPF " +
                                   "FROM FIN_TITULO FI " +
@@ -148,7 +149,25 @@ namespace Infra.DataBase
                                 // titulo.nuCpfcnpjPagador = Convert.ToInt64(dataReader["PJ_CGC"] ?? dataReader["PF_CPF"]);
                                 titulo.nuCpfcnpjPagador = Convert.ToInt64(dataReader["PJ_CGC"] != DBNull.Value ? dataReader["PJ_CGC"] : dataReader["PF_CPF"]);
                                 titulo.cdIndCpfcnpjPagador = titulo.nuCpfcnpjPagador.ToString().Length == 14 ? 2 : 1;
-                                listTitulos.Add(titulo);
+
+                                var entity = new Entidades.Retorno()
+                                {
+                                    Titulo = titulo.nuTitulo.ToString(),
+                                    Valor = titulo.vlNominalTitulo.ToString(),
+                                    Empresa = dataReader["FI_EMPRESA"].ToString(),
+                                    Revenda = dataReader["FI_REVENDA"].ToString(),
+                                    RevendaCodigo = empresa != null ? empresa.RevendaNumero : "1",
+                                    Parcela = dataReader["FI_DUPLICATA"].ToString(),
+                                    Cliente = dataReader["FAT_NOME"].ToString(),
+                                    TransacaoID = Guid.NewGuid().ToString()
+                                };
+
+                                
+                                listTitulos.Add(new RespSystem()
+                                {
+                                    Retorno = entity,
+                                    Boleto = titulo
+                                });
                             }
                             catch (Exception ex)
                             {
@@ -163,7 +182,7 @@ namespace Infra.DataBase
                     catch(Exception ex)
                     {
                         Console.WriteLine("Oracle Failed: " + ex.Message);
-                        return new List<BradescoBoleto>();
+                        return new List<RespSystem>();
                     }
                 }
             }

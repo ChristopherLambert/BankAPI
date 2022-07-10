@@ -71,6 +71,20 @@ namespace Domain.Services
             });
         }
 
+        public static bool AddOrUpdateRetorno(Infra.Entidades.Retorno rep)
+        {
+            var retorno = MySqlRepositorieRetorno.GetRetornoByTitulo(rep.Titulo.ToString());
+            if (retorno == null)
+                return MySqlRepositorieRetorno.AddRetorno(rep);
+            else
+            {
+                retorno.Status = rep.Status;
+                retorno.Ocorrencia = rep.Ocorrencia;
+                retorno.OcorrenciaCampos = rep.OcorrenciaCampos;
+                return MySqlRepositorieRetorno.UpdateRetorno(retorno);
+            }
+        }
+
         public static bool AddOrUpdateRetorno(Retorno rep)
         {
             var retorno = MySqlRepositorieRetorno.GetRetornoByTitulo(rep.Titulo.ToString());

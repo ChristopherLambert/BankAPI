@@ -34,7 +34,10 @@
             <thead>
                 <tr class="danger">
                     <th data-defaultsign="1000">Id</th>
-                    <th data-defaultsign="1000">Titulo</th>
+                    <th data-defaultsign="1000">Empresa</th>
+                    <th data-defaultsign="1000">Revenda</th>
+                    <th data-defaultsign="1000">Proposta</th>
+                    <th data-defaultsign="1000">Parcela</th>
                     <th data-defaultsign="AZ">Data</th>
                     <th data-defaultsign="AZ">Cliente</th>
                     <th data-defaultsign="AZ">Valor</th>
@@ -45,28 +48,29 @@
 
             foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Titulo</td>
-                    <td>@item.InsertData</td>
-                    <td>@item.Cliente</td>
-                    <td>@item.Valor</td>
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Empresa</td>
+        <td>@item.Revenda</td>
+        <td>@item.Titulo</td>
+        <td>@item.Parcela</td>
+        <td>@item.InsertData</td>
+        <td>@item.Cliente</td>
+        <td>@item.Valor</td>
 
-                    @if (item.Status.Contains("GERADA"))
-                    {
-                        <td> <span style="background-color: green; color: white; padding: 4px;"> @item.Status </span></td>
-                    }
-                    else
-                    {
-                        <td onclick="openError(@item.OcorrenciaCampos)" style="cursor: pointer;">
-                            <span style="background-color: red; color: white; padding: 4px;">
-                                @item.Status
-                            </span>
-                        </td>
-                    }
+        @if (item.Status.Contains("GERADA"))
+        {
+    <td> <span style="background-color: green; color: white; padding: 4px;"> @item.Status </span></td> }
+                        else
+                        {
+    <td onclick="openError(@item.OcorrenciaCampos)" style="cursor: pointer;">
+        <span style="background-color: red; color: white; padding: 4px;">
+            @item.Status
+        </span>
+    </td>}
 
-                    <td>@item.Ocorrencia</td>
-                </tr>
+        <td>@item.Ocorrencia</td>
+    </tr>
             }
         }
     </table>
