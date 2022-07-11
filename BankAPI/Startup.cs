@@ -13,6 +13,8 @@ namespace BankAPI
 {
     public class Startup
     {
+        public static Models.LoginViewModel Login { get; set; } = null;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -50,7 +52,7 @@ namespace BankAPI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=login}/{action=Index}/{id?}");
             });
         }
     }

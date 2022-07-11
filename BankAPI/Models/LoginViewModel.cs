@@ -1,6 +1,6 @@
-﻿namespace Infra.Entidades
+namespace BankAPI.Models
 {
-    public class Usuario
+    public class LoginViewModel
     {
         public int Id { get; set; }
         public string Login { get; set; }

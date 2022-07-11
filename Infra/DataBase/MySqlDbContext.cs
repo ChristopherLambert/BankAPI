@@ -43,7 +43,7 @@ namespace Infra.DataBase
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Login).IsRequired();
                 entity.Property(e => e.Senha).IsRequired();
-                entity.Property(e => e.Tipo).IsRequired();
+                entity.Property(e => e.RevendaId).IsRequired();
             });
 
             modelBuilder.Entity<Empresa>(entity =>
