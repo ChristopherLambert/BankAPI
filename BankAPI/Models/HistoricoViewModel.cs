@@ -1,6 +1,23 @@
+using System.Collections.Generic;
+
 namespace BankAPI.Models
 {
     public class HistoricoViewModel
+    {
+        public int EmpresaId { get; set; } = 0;
+        public int RevendaId { get; set; }
+        public List<RetornoViewModel> Retornos { get; set; }
+        public List<DropDownViewModel> Empresas { get; set; } = new List<DropDownViewModel>();
+        public List<DropDownViewModel> Revendas { get; set; } = new List<DropDownViewModel>();
+    }
+
+    public class DropDownViewModel
+    {
+        public int Id { get; set; }
+        public string Value { get; set; }
+    }
+
+    public class RetornoViewModel
     {
         public int Id { get; set; }
         public string TransacaoID { get; set; }

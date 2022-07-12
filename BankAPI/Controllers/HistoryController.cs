@@ -40,18 +40,21 @@ namespace BankAPI.Controllers
                     retornos = MySqlServicesRetorno.GetDateRetorno(dateTime);
                 }
 
-                return View(retornos.Select(
-                rep => new HistoricoViewModel()
-                     {
-                         Id = rep.Id,
-                         TransacaoID = rep.TransacaoID,
-                         Empresa = rep.Empresa,
-                         Cliente = rep.Cliente,
-                         Status = rep.Status,
-                         Valor = rep.Valor,
-                         Ocorrencia = rep.Ocorrencia,
-                         InsertData = rep.InsertData,
-                     }).ToList());
+                var viewModel = new HistoricoViewModel();
+                viewModel.Retornos = retornos.Select(
+                    rep => new RetornoViewModel()
+                    {
+                        Id = rep.Id,
+                        TransacaoID = rep.TransacaoID,
+                        Empresa = rep.Empresa,
+                        Cliente = rep.Cliente,
+                        Status = rep.Status,
+                        Valor = rep.Valor,
+                        Ocorrencia = rep.Ocorrencia,
+                        InsertData = rep.InsertData,
+                    }).ToList();
+
+                return View(viewModel);
             }
             catch(Exception ex)
             {
