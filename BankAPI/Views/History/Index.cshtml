@@ -115,10 +115,34 @@
     function filter() {
 
         const dateFilter = $('#date').val();
+        const empresaFilter = $('#listEmpresas').val();
+        const revendaFilter = $('#listReservas').val();
+        const statusFilter = $('#listStatus').val();
 
-        if (dateFilter != null) {
-            loading();
-            var urlFilte = "https://localhost:44354/History?date=" + dateFilter;
+        var urlQuery = "";
+        loading();
+
+        if (dateFilter) {
+            urlQuery = "date=" + dateFilter;
+        }
+        if (empresaFilter) {
+            if (urlQuery == "") 
+                urlQuery = "empresaId=" + empresaFilter;
+            else urlQuery = urlQuery + "&empresaId=" + empresaFilter;
+        }
+        if (revendaFilter) {
+            if (urlQuery == "")
+                urlQuery = "revendaId=" + revendaFilter;
+            else urlQuery = urlQuery +"&revendaId=" + revendaFilter;
+        }
+        if (statusFilter) {
+            if (urlQuery == "")
+                urlQuery = "statusId=" + statusFilter;
+            else urlQuery = urlQuery + "&statusId=" + statusFilter;
+        }
+
+        if (urlQuery) {
+            var urlFilte = "https://localhost:44354/History?" + urlQuery;
             window.location.href = urlFilte;
         }
         else {

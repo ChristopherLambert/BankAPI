@@ -19,7 +19,8 @@ namespace BankAPI.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(string date)
+        // STATUS 1 GERADA / 2 ERRO /  E TODAS
+        public IActionResult Index(string date, int empresaId, int revendaId, int statusId = 3)
         {
             try
             {
@@ -41,6 +42,68 @@ namespace BankAPI.Controllers
                 }
 
                 var viewModel = new HistoricoViewModel();
+
+                #region dropdown
+                //DropDown
+                viewModel.Empresas = MySqlServicesEmpresa.GetAllEmpresa().Select(empresa =>
+                {
+                    return new DropDownViewModel()
+                    {
+                        Id = empresa.Id,
+                        Value = empresa.Nome
+                    };
+                }).ToList();
+
+                viewModel.Revendas = retornos.GroupBy(customer => customer.RevendaCodigo)
+                    .Select(retorno => retorno.First())
+                    .Select(retorno =>
+                    {
+                        return new DropDownViewModel()
+                        {
+                            Id = Convert.ToInt32(retorno.RevendaCodigo),
+                            Value = retorno.Revenda
+                        };
+                    }).ToList();
+
+                viewModel.Status.Add(new DropDownViewModel()
+                {
+                    Id = 1,
+                    Value = "GERADA"
+                });
+
+                viewModel.Status.Add(new DropDownViewModel()
+                {
+                    Id = 2,
+                    Value = "COM ERRO"
+                });
+
+                viewModel.Status.Add(new DropDownViewModel()
+                {
+                    Id = 3,
+                    Value = "TODAS"
+                });
+                #endregion
+
+                if (empresaId != 0)
+                {
+                    var empFilter = viewModel.Empresas.First(emp => emp.Id == empresaId);
+                    retornos = retornos.Where(retorno => retorno.Empresa.Equals(empFilter)).ToList();
+                }
+
+                if (revendaId != 0)
+                {
+                    retornos = retornos.Where(retorno => Convert.ToInt32(retorno.RevendaCodigo) == revendaId).ToList();
+                }
+
+                if (statusId == 2)
+                {
+                    retornos = retornos.Where(retorno => !retorno.Status.Contains("GERADA")).ToList();
+                }
+                if (statusId == 1)
+                {
+                    retornos = retornos.Where(retorno => retorno.Status.Contains("GERADA")).ToList();
+                }
+
                 viewModel.Retornos = retornos.Select(
                     rep => new RetornoViewModel()
                     {
