@@ -101,3 +101,28 @@ namespace Infra.Repositorie
         #endregion
     }
 }
+
+// DADOS MOCADOS
+//INSERT INTO uTestBoleto.Retorno
+//(TransacaoID, Titulo, Empresa, Revenda, RevendaCodigo, Parcela, Cliente, Ocorrencia, OcorrenciaCampos, Valor, Status, InsertData, UpdateData)
+//VALUES('1234', '0009678', '1', 'Teste', '1', '009112', 'CHRISTOPHER', 'Erro ao gerar remessa', ' CPF Invalido', '123', 'REMESSA COM FALHA', CURDATE(), CURDATE())
+
+//INSERT INTO uTestBoleto.Retorno
+//(TransacaoID, Titulo, Empresa, Revenda, RevendaCodigo, Parcela, Cliente, Ocorrencia, OcorrenciaCampos, Valor, Status, InsertData, UpdateData)
+//VALUES('1234', '0009678', '1', 'Teste', '2', '009112', 'CHRISTOPHER', 'Erro ao gerar remessa', ' CNPJ Invalido', '123', 'REMESSA COM FALHA', CURDATE(), CURDATE())
+
+//INSERT INTO uTestBoleto.Retorno
+//(TransacaoID, Titulo, Empresa, Revenda, RevendaCodigo, Parcela, Cliente, Ocorrencia, OcorrenciaCampos, Valor, Status, InsertData, UpdateData)
+//VALUES('1234', '0009678', '1', 'Teste', '1', '009112', 'CHRISTOPHER', '', '', '123', 'REMESSA GERADA', CURDATE(), CURDATE())
+
+//INSERT INTO uTestBoleto.Retorno
+//(TransacaoID, Titulo, Empresa, Revenda, RevendaCodigo, Parcela, Cliente, Ocorrencia, OcorrenciaCampos, Valor, Status, InsertData, UpdateData)
+//VALUES('1234', '0009678', '1', 'Teste 2', '2', '009112', 'CHRISTOPHER', '', '', '123', 'REMESSA GERADA', CURDATE(), CURDATE())
+
+//INSERT INTO uTestBoleto.Retorno
+//(TransacaoID, Titulo, Empresa, Revenda, RevendaCodigo, Parcela, Cliente, Ocorrencia, OcorrenciaCampos, Valor, Status, InsertData, UpdateData)
+//VALUES('1234', '0009678', '1', 'Teste 3', '3', '009112', 'CHRISTOPHER', '', '', '123', 'REMESSA GERADA', CURDATE(), CURDATE())
+
+//INSERT INTO uTestBoleto.Retorno
+//(TransacaoID, Titulo, Empresa, Revenda, RevendaCodigo, Parcela, Cliente, Ocorrencia, OcorrenciaCampos, Valor, Status, InsertData, UpdateData)
+//VALUES('1234', '0009678', '2', 'Teste 3', '3', '009112', 'CHRISTOPHER', '', '', '123', 'REMESSA GERADA', CURDATE(), CURDATE())
