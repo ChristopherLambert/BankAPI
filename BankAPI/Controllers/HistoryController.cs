@@ -85,7 +85,7 @@ namespace BankAPI.Controllers
                 #endregion
 
                 #region filters
-                if (!string.IsNullOrEmpty(Startup.Login.RevendaId))
+                if (!string.IsNullOrEmpty(Startup.Login.RevendaId) && !Startup.Login.RevendaId.Equals("0"))
                     revendaId = Convert.ToInt32(Startup.Login.RevendaId);
 
                 if (empresaId != 0)

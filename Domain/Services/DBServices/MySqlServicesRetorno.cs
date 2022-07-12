@@ -51,8 +51,11 @@ namespace Domain.Services
                 Empresa = rep.Empresa,
                 Cliente = rep.Cliente,
                 Ocorrencia = rep.Ocorrencia,
+                OcorrenciaCampos = rep.OcorrenciaCampos,
                 Valor = rep.Valor,
                 Status = rep.Status,
+                Revenda = rep.Revenda,
+                RevendaCodigo = rep.RevendaCodigo,
                 InsertData = rep.InsertData.ToString("dd/MM/yyyy")
             }).ToList();
         }

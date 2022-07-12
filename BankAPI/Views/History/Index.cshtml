@@ -19,7 +19,7 @@
                  @Html.DropDownListFor(x => Model.EmpresaId, new SelectList(Model.Empresas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listEmpresas" })
             </div>
             <div class="col-md-2">
-                 <label for="listReservas" style="font-size: 18px">RESERVAS </label>
+                 <label for="listReservas" style="font-size: 18px">REVENDAS </label>
                  @Html.DropDownListFor(x => Model.RevendaId, new SelectList(Model.Revendas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listReservas" })
             </div>
          }
@@ -75,7 +75,7 @@
  }
 else
 {
-<td onclick="openError(@item.OcorrenciaCampos)" style="cursor: pointer;">
+<td onclick="openError('@item.OcorrenciaCampos')" style="cursor: pointer;">
     <span style="background-color: red; color: white; padding: 4px;">
         @item.Status
     </span>
