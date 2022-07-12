@@ -118,7 +118,7 @@ namespace BankAPI.Controllers
                         TransacaoID = rep.TransacaoID,
                         // Empresa = rep.Empresa,
                         Empresa = viewModel.Empresas.FirstOrDefault(emp => emp.Id.ToString().Equals(rep.Empresa))?.Value ?? rep.Empresa,
-                        Revenda = rep.Revenda,
+                        Revenda = viewModel.Revendas.FirstOrDefault(emp => emp.Id.ToString().Equals(rep.RevendaCodigo))?.Value ?? rep.Revenda,
                         Cliente = rep.Cliente,
                         Status = rep.Status,
                         Valor = rep.Valor,
