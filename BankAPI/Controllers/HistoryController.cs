@@ -84,17 +84,16 @@ namespace BankAPI.Controllers
                 });
                 #endregion
 
+                #region filters
                 if (empresaId != 0)
                 {
                     var empFilter = viewModel.Empresas.First(emp => emp.Id == empresaId);
                     retornos = retornos.Where(retorno => retorno.Empresa.Equals(empFilter)).ToList();
                 }
-
                 if (revendaId != 0)
                 {
                     retornos = retornos.Where(retorno => Convert.ToInt32(retorno.RevendaCodigo) == revendaId).ToList();
                 }
-
                 if (statusId == 2)
                 {
                     retornos = retornos.Where(retorno => !retorno.Status.Contains("GERADA")).ToList();
@@ -103,6 +102,7 @@ namespace BankAPI.Controllers
                 {
                     retornos = retornos.Where(retorno => retorno.Status.Contains("GERADA")).ToList();
                 }
+                #endregion
 
                 viewModel.Retornos = retornos.Select(
                     rep => new RetornoViewModel()
