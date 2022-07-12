@@ -121,6 +121,7 @@ namespace BankAPI.Controllers
                         Status = rep.Status,
                         Valor = rep.Valor,
                         Ocorrencia = rep.Ocorrencia,
+                        OcorrenciaCampos = rep.OcorrenciaCampos,
                         InsertData = rep.InsertData,
                     }).ToList();
 
