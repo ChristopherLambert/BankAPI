@@ -6,7 +6,7 @@ namespace BankAPI.Models
     {
         public int EmpresaId { get; set; } = 0;
         public int RevendaId { get; set; } = 0;
-        public int StatusId { get; set; } = 0;
+        public int StatusId { get; set; } = 3; // TODAS
         public List<RetornoViewModel> Retornos { get; set; }
         public List<DropDownViewModel> Empresas { get; set; } = new List<DropDownViewModel>();
         public List<DropDownViewModel> Revendas { get; set; } = new List<DropDownViewModel>();
