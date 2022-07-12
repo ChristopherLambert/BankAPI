@@ -1,12 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Historico das Transações";
-}
+﻿@{ ViewData["Title"] = "Historico das Transações"; }
 <h1>@ViewData["Title"]</h1>
 
 @model HistoricoViewModel
-@{
-    ViewBag.Title = "Historico das Transações";
-}
+@{ ViewBag.Title = "Historico das Transações"; }
 <br />
 
 <form>
@@ -15,14 +11,19 @@
             <label for="date">Filtro por Data </label>
             @Html.TextBox("date", null, new { @class = "form-control datepicker" })
         </div>
-        <div class="col-md-2">
-            <label for="listEmpresas" style="font-size: 18px">EMPRESAS </label>
-            @Html.DropDownListFor(x => Model.EmpresaId, new SelectList(Model.Empresas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listEmpresas" })
-        </div>
-        <div class="col-md-2">
-            <label for="listReservas" style="font-size: 18px">RESERVAS </label>
-            @Html.DropDownListFor(x => Model.RevendaId, new SelectList(Model.Revendas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listReservas" })
-        </div>
+
+        @if (Startup.Login.RevendaId == null || Startup.Login.RevendaId.Equals("0"))
+        {
+            <div class="col-md-2">
+                <label for="listEmpresas" style="font-size: 18px">EMPRESAS </label>
+                 @Html.DropDownListFor(x => Model.EmpresaId, new SelectList(Model.Empresas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listEmpresas" })
+            </div>
+            <div class="col-md-2">
+                 <label for="listReservas" style="font-size: 18px">RESERVAS </label>
+                 @Html.DropDownListFor(x => Model.RevendaId, new SelectList(Model.Revendas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listReservas" })
+            </div>
+         }
+
         <div class="col-md-2">
             <label for="listStatus" style="font-size: 18px">STATUS </label>
             @Html.DropDownListFor(x => Model.StatusId, new SelectList(Model.Status, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listStatus" })
@@ -38,54 +39,52 @@
            class="table table-bordered table-condensed table-striped table-hover sortable">
         @if (Model.Retornos.Count() == 0)
         {
-            <tr>
-                <td colspan="10">Sem dados para fazer a exibição</td>
-            </tr>
-        }
-        else
-        {
-            <thead>
-                <tr class="danger">
-                    <th data-defaultsign="1000">Id</th>
-                    <th data-defaultsign="1000">Empresa</th>
-                    <th data-defaultsign="1000">Revenda</th>
-                    <th data-defaultsign="1000">Proposta</th>
-                    <th data-defaultsign="1000">Parcela</th>
-                    <th data-defaultsign="AZ">Data</th>
-                    <th data-defaultsign="AZ">Cliente</th>
-                    <th data-defaultsign="AZ">Valor</th>
-                    <th data-defaultsign="AZ">Status</th>
-                    <th data-defaultsign="2020">Ocorrencia</th>
-                </tr>
-            </thead>
-
-            foreach (var item in Model.Retornos)
+<tr>
+    <td colspan="10">Sem dados para fazer a exibição</td>
+</tr> }
+            else
             {
-    <tr>
-        <td>@item.Id</td>
-        <td>@item.Empresa</td>
-        <td>@item.Revenda</td>
-        <td>@item.Titulo</td>
-        <td>@item.Parcela</td>
-        <td>@item.InsertData</td>
-        <td>@item.Cliente</td>
-        <td>@item.Valor</td>
-
-        @if (item.Status.Contains("GERADA"))
-        {
-    <td> <span style="background-color: green; color: white; padding: 4px;"> @item.Status </span></td> }
-                        else
-                        {
-    <td onclick="openError(@item.OcorrenciaCampos)" style="cursor: pointer;">
-        <span style="background-color: red; color: white; padding: 4px;">
-            @item.Status
-        </span>
-    </td>}
-
-        <td>@item.Ocorrencia</td>
+<thead>
+    <tr class="danger">
+        <th data-defaultsign="1000">Id</th>
+        <th data-defaultsign="1000">Empresa</th>
+        <th data-defaultsign="1000">Revenda</th>
+        <th data-defaultsign="1000">Proposta</th>
+        <th data-defaultsign="1000">Parcela</th>
+        <th data-defaultsign="AZ">Data</th>
+        <th data-defaultsign="AZ">Cliente</th>
+        <th data-defaultsign="AZ">Valor</th>
+        <th data-defaultsign="AZ">Status</th>
+        <th data-defaultsign="2020">Ocorrencia</th>
     </tr>
+</thead> foreach (var item in Model.Retornos)
+                {
+<tr>
+    <td>@item.Id</td>
+    <td>@item.Empresa</td>
+    <td>@item.Revenda</td>
+    <td>@item.Titulo</td>
+    <td>@item.Parcela</td>
+    <td>@item.InsertData</td>
+    <td>@item.Cliente</td>
+    <td>@item.Valor</td>
+
+    @if (item.Status.Contains("GERADA"))
+    {
+<td> <span style="background-color: green; color: white; padding: 4px;"> @item.Status </span></td>
+ }
+else
+{
+<td onclick="openError(@item.OcorrenciaCampos)" style="cursor: pointer;">
+    <span style="background-color: red; color: white; padding: 4px;">
+        @item.Status
+    </span>
+</td>
+}
+
+    <td>@item.Ocorrencia</td>
+</tr>}
             }
-        }
     </table>
 </div>
 
@@ -126,14 +125,14 @@
             urlQuery = "date=" + dateFilter;
         }
         if (empresaFilter) {
-            if (urlQuery == "") 
+            if (urlQuery == "")
                 urlQuery = "empresaId=" + empresaFilter;
             else urlQuery = urlQuery + "&empresaId=" + empresaFilter;
         }
         if (revendaFilter) {
             if (urlQuery == "")
                 urlQuery = "revendaId=" + revendaFilter;
-            else urlQuery = urlQuery +"&revendaId=" + revendaFilter;
+            else urlQuery = urlQuery + "&revendaId=" + revendaFilter;
         }
         if (statusFilter) {
             if (urlQuery == "")
