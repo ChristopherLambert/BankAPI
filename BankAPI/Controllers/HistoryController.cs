@@ -92,7 +92,7 @@ namespace BankAPI.Controllers
                 {
                     viewModel.EmpresaId = empresaId;
                     var empFilter = viewModel.Empresas.First(emp => emp.Id == empresaId);
-                    retornos = retornos.Where(retorno => retorno.Empresa.Equals(empresaId)).ToList();
+                    retornos = retornos.Where(retorno => retorno.Empresa.Equals(empresaId.ToString())).ToList();
                 }
                 if (revendaId != 0)
                 {
