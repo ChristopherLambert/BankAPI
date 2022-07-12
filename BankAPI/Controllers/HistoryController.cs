@@ -85,21 +85,28 @@ namespace BankAPI.Controllers
                 #endregion
 
                 #region filters
+                if (!string.IsNullOrEmpty(Startup.Login.RevendaId))
+                    revendaId = Convert.ToInt32(Startup.Login.RevendaId);
+
                 if (empresaId != 0)
                 {
+                    viewModel.EmpresaId = empresaId;
                     var empFilter = viewModel.Empresas.First(emp => emp.Id == empresaId);
-                    retornos = retornos.Where(retorno => retorno.Empresa.Equals(empFilter)).ToList();
+                    retornos = retornos.Where(retorno => retorno.Empresa.Equals(empresaId)).ToList();
                 }
                 if (revendaId != 0)
                 {
+                    viewModel.RevendaId = revendaId;
                     retornos = retornos.Where(retorno => Convert.ToInt32(retorno.RevendaCodigo) == revendaId).ToList();
                 }
                 if (statusId == 2)
                 {
+                    viewModel.StatusId = statusId;
                     retornos = retornos.Where(retorno => !retorno.Status.Contains("GERADA")).ToList();
                 }
                 if (statusId == 1)
                 {
+                    viewModel.StatusId = statusId;
                     retornos = retornos.Where(retorno => retorno.Status.Contains("GERADA")).ToList();
                 }
                 #endregion
