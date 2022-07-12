@@ -15,13 +15,17 @@
             <label for="date">Filtro por Data </label>
             @Html.TextBox("date", null, new { @class = "form-control datepicker" })
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="listEmpresas" style="font-size: 18px">EMPRESAS </label>
             @Html.DropDownListFor(x => Model.EmpresaId, new SelectList(Model.Empresas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listEmpresas" })
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="listReservas" style="font-size: 18px">RESERVAS </label>
-            @Html.DropDownListFor(x => Model.RevendaId, new SelectList(Model.Empresas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listReservas" })
+            @Html.DropDownListFor(x => Model.RevendaId, new SelectList(Model.Revendas, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listReservas" })
+        </div>
+        <div class="col-md-2">
+            <label for="listStatus" style="font-size: 18px">STATUS </label>
+            @Html.DropDownListFor(x => Model.StatusId, new SelectList(Model.Status, "Id", "Value"), htmlAttributes: new { @class = "form-control", id = "listStatus" })
         </div>
         <div class="col-md-3">
             <button type="button" style="float: right; margin-bottom: 8px; margin-top: 30px;" class="btn btn-primary" onclick="filter()">FILTRAR</button>

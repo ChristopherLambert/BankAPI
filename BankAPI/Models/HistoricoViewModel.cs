@@ -5,10 +5,12 @@ namespace BankAPI.Models
     public class HistoricoViewModel
     {
         public int EmpresaId { get; set; } = 0;
-        public int RevendaId { get; set; }
+        public int RevendaId { get; set; } = 0;
+        public int StatusId { get; set; } = 0;
         public List<RetornoViewModel> Retornos { get; set; }
         public List<DropDownViewModel> Empresas { get; set; } = new List<DropDownViewModel>();
         public List<DropDownViewModel> Revendas { get; set; } = new List<DropDownViewModel>();
+        public List<DropDownViewModel> Status { get; set; } = new List<DropDownViewModel>();
     }
 
     public class DropDownViewModel
