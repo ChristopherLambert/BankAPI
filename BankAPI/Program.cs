@@ -26,7 +26,8 @@ namespace BankAPI
                         {
                             Console.WriteLine("Starting Service Conneck Bank");
                             await IntegrationService.Startntegration();
-                            Thread.Sleep(3600000);//1 Hora
+                            Thread.Sleep(120);//2 minutos
+                            // Thread.Sleep(3600000);//1 Hora
                         }
                     }).Start();
 
